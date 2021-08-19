@@ -27,7 +27,6 @@ type alpacaClientContainer struct {
 }
 
 func tradeUpdateHandler(update alpaca.TradeUpdate) {
-	fmt.Println("dddd")
 	fmt.Println("trade update", update)
 }
 
