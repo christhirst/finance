@@ -3,9 +3,11 @@ package pkg
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/alpacahq/alpaca-trade-api-go/common"
+	v2 "github.com/alpacahq/alpaca-trade-api-go/v2"
 	"github.com/alpacahq/alpaca-trade-api-go/v2/stream"
 	"github.com/shopspring/decimal"
 )
@@ -47,22 +49,34 @@ func Init() {
 	os.Setenv(common.EnvApiSecretKey, os.Getenv("Secret_Key"))
 	fmt.Printf("Running w/ credentials [%v %v]\n", common.Credentials().ID, common.Credentials().Secret)
 
-	apiKey := os.Getenv("API_Key_ID")
-	apiSecret := os.Getenv("Secret_Key")
+	alpacaClient := alpaca.NewClient(common.Credentials())
+	acct, err := alpacaClient.GetAccount()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(acct.Status)
 
-	if common.Credentials().ID == "" {
-		os.Setenv(common.EnvApiKeyID, apiKey)
+	fmt.Println(alpacaClient.GetLatestQuote("AAPL"))
+	bars := alpacaClient.GetBars(
+		"AAPL", v2.Day, v2.Raw, time.Now().Add(-7*48*time.Hour), time.Now().Add(-20*time.Minute), 7)
+	var barset []v2.Bar
+
+	for bar := range bars {
+		if bar.Error != nil {
+			panic(bar.Error)
+		}
+		barset = append(barset, bar.Bar)
 	}
-	if common.Credentials().Secret == "" {
-		os.Setenv(common.EnvApiSecretKey, apiSecret)
-	}
+	fmt.Println(barset[1])
+
 	stream.DataStreamURL = "https://stream.data.alpaca.markets"
 	stream.UseFeed("iex")
+
 	if err := stream.SubscribeTradeUpdates(tradeUpdateHandler); err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
-	fmt.Println("ddd")
+
 	if err := stream.SubscribeTrades(tradeHandler, "AAPL"); err != nil {
 		panic(err)
 	}
@@ -75,14 +89,6 @@ func Init() {
 
 	select {}
 
-	alpaca.SetBaseUrl("https://paper-api.alpaca.markets")
-
-	alpacaClient := alpaca.NewClient(common.Credentials())
-
-	acct, err := alpacaClient.GetAccount()
-	if err != nil {
-		panic(err)
-	}
 	// Cancel any open orders so they don't interfere with this script
 	alpacaClient.CancelAllOrders()
 
