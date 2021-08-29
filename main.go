@@ -15,8 +15,10 @@ limitations under the License.
 */
 package main
 
-import "github.com/gitpod/mycli/cmd"
+import (
+	"github.com/gitpod/mycli/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	cmd.Init()
 }
