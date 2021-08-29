@@ -1,8 +1,21 @@
 package alpacaAcc
 
-func GoldenCross(stock string, floatingAverage float32) bool {
+import (
+	"fmt"
 
-	return true
+	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/gitpod/mycli/pkg/indicator"
+)
+
+func GoldenCross(c *alpaca.Client, symbol string, shortAv int, longAv int) bool {
+
+	barsShort := GetHistData(c, symbol, shortAv)
+	barsLong := GetHistData(c, symbol, longAv)
+	if indicator.Avarage(barsLong) > indicator.Avarage(barsShort) {
+		fmt.Println(indicator.Avarage(barsShort))
+		return true
+	}
+	return false
 
 }
 
