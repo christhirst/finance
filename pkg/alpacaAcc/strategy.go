@@ -7,12 +7,15 @@ import (
 	"github.com/gitpod/mycli/pkg/indicator"
 )
 
-func GoldenCross(c *alpaca.Client, symbol string, shortAv int, longAv int) bool {
+func GoldenCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) bool {
+	fmt.Println(len(bars))
+	shortBars := bars[(len(bars) - shortAvD):]
+	longBars := bars[(len(bars) - longAvD):]
 
-	barsShort := GetHistData(c, symbol, shortAv)
-	barsLong := GetHistData(c, symbol, longAv)
-	if indicator.Avarage(barsLong) > indicator.Avarage(barsShort) {
-		fmt.Println(indicator.Avarage(barsShort))
+	shortAv := indicator.Avarage(shortBars)
+	longAv := indicator.Avarage(longBars)
+	if longAv <= shortAv && bars[len(shortBars)-1].Close > bars[len(shortBars)-1].Close {
+		fmt.Println(longAv)
 		return true
 	}
 	return false
