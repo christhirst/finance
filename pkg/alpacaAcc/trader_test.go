@@ -3,7 +3,9 @@ package alpacaAcc
 import "testing"
 
 func TestTrader(t *testing.T) {
-	//stratList := []string{"GoldenCross", "GoldenCross"}
-	//rader(c, stockList, stratList)
+	client := Init()
+	stratList := []string{"GoldenCross"}
+	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
+	Trader(client, stockList, stratList)
 
 }

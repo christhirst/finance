@@ -6,13 +6,11 @@ import (
 
 func Avarage(bars []alpaca.Bar) float32 {
 	var sum float32
-	var timesum int
-	for t, c := range bars {
+	for _, c := range bars {
 		sum += c.Close
-		timesum += t
 	}
 
-	return (sum / float32(timesum+1))
+	return (sum / float32(len(bars)))
 
 }
 
