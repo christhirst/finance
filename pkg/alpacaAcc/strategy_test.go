@@ -1,7 +1,6 @@
 package alpacaAcc
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
@@ -11,7 +10,7 @@ func TestGoldenCross(t *testing.T) {
 	symbol := "AAPL"
 	client := Init()
 
-	daysback := 0
+	daysback := 500
 	shortAv := 40
 	longAv := 100
 
@@ -22,9 +21,9 @@ func TestGoldenCross(t *testing.T) {
 	daysback = len(backBars)
 
 	longAv = len(bars) - 1 - daysback
+
 	for i := 0; i <= daysback; i++ {
 		if (GoldenCross(bars, daysback-i, shortAv, longAv) == 1) && (bars[len(bars)-daysback+i-1].Close < bars[len(bars)-daysback+i-2].Close) {
-			fmt.Println("######################")
 			t.Errorf("Next Price is lower %d", GoldenCross(bars, daysback-i, shortAv, longAv))
 		}
 	}

@@ -1,8 +1,6 @@
 package alpacaAcc
 
 import (
-	"fmt"
-
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/gitpod/mycli/pkg/indicator"
 )
@@ -20,10 +18,6 @@ func GoldenCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) int
 	longAvDaybefore := indicator.Avarage(longBarsDaybefore)
 
 	if longAv <= shortAv && longAvDaybefore >= shortAvDaybefore {
-		fmt.Println(longAv)
-		fmt.Println(shortAv)
-		fmt.Println(longAvDaybefore)
-		fmt.Println(shortAvDaybefore)
 		return 1
 	}
 	if longAv >= shortAv && longAvDaybefore <= shortAvDaybefore {
@@ -33,7 +27,3 @@ func GoldenCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) int
 }
 
 // TODO: complete
-func DeathCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) bool {
-
-	return true
-}
