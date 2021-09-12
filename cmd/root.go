@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/gitpod/mycli/pkg/alpacaAcc"
+	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/spf13/cobra"
 )
 

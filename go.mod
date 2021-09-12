@@ -1,4 +1,4 @@
-module github.com/gitpod/mycli
+module github.com/christhirst/finance
 
 go 1.16
 
