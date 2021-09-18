@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  API_KEY_ID: ${{ secrets.API_KEY_ID }}
+  API_KEY_ID: "ewwewwe" #"${{ secrets.API_KEY_ID }}"
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
 jobs:
