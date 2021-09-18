@@ -7,8 +7,8 @@ import (
 
 func TestInit(t *testing.T) {
 	client := Init()
-
-	if client == nil {
+	_, err := client.GetAccount()
+	if err != nil {
 		t.Errorf("Expected object not %s", os.Getenv("API_Key_ID")[:4])
 	}
 	t.Error(client.GetAccount())
