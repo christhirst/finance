@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    environment: alpaca
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +20,7 @@ jobs:
 
       - name: Test
         env:
-          API_KEY_ID: ${{ API_KEY_ID }}
+          API_KEY_ID: ${{ secrets.API_KEY_ID }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: go test -v ./...
 
