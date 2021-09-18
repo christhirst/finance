@@ -21,7 +21,7 @@ jobs:
       - name: Test
         run: go test -v ./...
         env:
-          API_KEY_ID: ${{ secrets.API_KEY_ID }}
+          API_KEY_ID: "ddddddddd"
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
       - name: Build and push
