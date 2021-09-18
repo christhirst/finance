@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-   API_KEY_ID: "${{ secrets.API_KEY_ID }}"
-   SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  API_KEY_ID: ${{ secrets.API_KEY_ID }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
 jobs:
   build:
@@ -26,7 +26,10 @@ jobs:
 
       - name: Test
 
-        run: echo ${{ env.API_KEY_ID }} #go test -v ./...
+        run: go test -v ./...
+        with:
+          API_KEY_ID: ${{ secrets.API_KEY_ID }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
       - name: Build and push
         uses: mr-smithers-excellent/docker-build-push@v5
