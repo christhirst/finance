@@ -15,8 +15,17 @@ limitations under the License.
 */
 package main
 
-import "github.com/christhirst/finance/cmd"
+import (
+	"sync"
+
+	"github.com/christhirst/finance/cmd"
+)
+
+var wg = sync.WaitGroup{}
 
 func main() {
-	cmd.Init()
+	wg.Add(1)
+
+	go cmd.Init(&wg)
+	wg.Wait()
 }
