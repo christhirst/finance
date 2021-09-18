@@ -24,7 +24,7 @@ jobs:
         env:
           API_KEY_ID: "dddddd"
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: go test -v ./...
+        run: echo $API_KEY_ID #go test -v ./...
 
       - name: Build and push
         uses: mr-smithers-excellent/docker-build-push@v5
