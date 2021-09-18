@@ -26,7 +26,7 @@ jobs:
 
       - name: Test
 
-        run: echo $API_KEY_ID #go test -v ./...
+        run: echo ${{ env.API_KEY_ID }} ${{ API_KEY_ID }}#go test -v ./...
 
       - name: Build and push
         uses: mr-smithers-excellent/docker-build-push@v5
