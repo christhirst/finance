@@ -6,6 +6,10 @@ on:
 
   workflow_dispatch:
 
+env:
+   API_KEY_ID: "${{ secrets.API_KEY_ID }}"
+   SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,9 +25,7 @@ jobs:
         run: go build -v ./...
 
       - name: Test
-        env:
-          API_KEY_ID: "${{ secrets.API_KEY_ID }}"
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
         run: echo $API_KEY_ID #go test -v ./...
 
       - name: Build and push
