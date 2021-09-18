@@ -10,7 +10,7 @@ import (
 func TestInit(t *testing.T) {
 	client := Init()
 	if client == nil {
-		t.Errorf("Expected object not %s", os.Setenv(common.EnvApiKeyID, os.Getenv("env.API_Key_ID")))
+		t.Errorf("Expected object not %s", os.Setenv(common.EnvApiKeyID, os.Getenv("API_Key_ID")))
 	}
 
 }
