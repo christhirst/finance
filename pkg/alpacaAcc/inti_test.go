@@ -13,6 +13,7 @@ func TestInit(t *testing.T) {
 	}
 	if 0 < 2 {
 		t.Error(os.Environ())
+		t.Error(os.Getenv("API_KEY_ID"))
 	}
 
 }
