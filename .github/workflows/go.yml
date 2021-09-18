@@ -22,7 +22,7 @@ jobs:
 
       - name: Test
         env:
-          API_KEY_ID: dddddd
+          API_KEY_ID: "dddddd"
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: go test -v ./...
 
