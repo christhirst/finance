@@ -32,7 +32,7 @@ func Init() *alpaca.Client {
 	alpaca.SetBaseUrl("https://paper-api.alpaca.markets")
 
 	os.Setenv(common.EnvApiKeyID, os.Getenv("API_Key_ID"))
-	os.Setenv(common.EnvApiSecretKey, os.Getenv("Secret_Key"))
+	os.Setenv(common.EnvApiSecretKey, os.Getenv("SECRET_KEY"))
 	fmt.Printf("Running w/ credentials [%v %v]\n", common.Credentials().ID, common.Credentials().Secret)
 
 	return alpaca.NewClient(common.Credentials())
