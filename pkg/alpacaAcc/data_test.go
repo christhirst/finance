@@ -25,7 +25,7 @@ func TestGetHistData(t *testing.T) {
 		}
 
 		if bar == nil {
-			t.Error("Strock not found")
+			t.Error("No Data could be fetched", stock, now, then)
 		}
 		if len(bar) < 1 {
 			t.Errorf("Slice < 1")
