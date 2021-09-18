@@ -11,7 +11,7 @@ func TestGoldenCross(t *testing.T) {
 	symbol := "AAPL"
 	client := Init()
 
-	for i := 0; i <= 50; i++ {
+	for i := 0; i <= 20; i++ {
 
 		min := 10
 		daysback := rand.Intn(500) + min
