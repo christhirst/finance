@@ -8,8 +8,9 @@ import (
 )
 
 func GoldenCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) int {
-	fmt.Println(len(bars))
-	fmt.Println(-longAvD - daysback - 1)
+	/* fmt.Println(len(bars))
+	fmt.Println(longAvD + daysback)
+	fmt.Println(longAvD, daysback, shortAvD) */
 	shortBars := bars[(len(bars) - shortAvD - daysback) : len(bars)-daysback]
 	longBars := bars[(len(bars) - longAvD - daysback) : len(bars)-daysback]
 

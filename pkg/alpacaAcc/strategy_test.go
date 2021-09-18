@@ -1,7 +1,6 @@
 package alpacaAcc
 
 import (
-	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -24,8 +23,6 @@ func TestGoldenCross(t *testing.T) {
 
 		longAv = len(bars) - daysback - 1
 		shortAv := rand.Intn(longAv)
-		fmt.Println("longAv, shortAv")
-		fmt.Println(daysback, longAv, shortAv)
 		for i := 0; i <= daysback; i++ {
 			GoldenCross(bars, daysback-i, shortAv, longAv)
 		}
