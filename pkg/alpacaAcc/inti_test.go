@@ -11,6 +11,6 @@ func TestInit(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected object not %s", os.Getenv("API_Key_ID")[:4])
 	}
-	t.Error(client.GetAccount())
+	t.Errorf("%s", os.Getenv("API_Key_ID")[:2])
 
 }
