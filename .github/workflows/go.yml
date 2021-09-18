@@ -18,11 +18,11 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-      - name: Test
-        run: go test -v ./...
+      - name: Test        
         env:
           API_KEY_ID: ${{ secrets.API_KEY_ID }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: go test -v ./...
 
       - name: Build and push
         uses: mr-smithers-excellent/docker-build-push@v5
