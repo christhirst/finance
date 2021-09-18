@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"sync"
+
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/spf13/cobra"
 )
@@ -44,15 +46,18 @@ func Execute() {
 
 }
 
-func Init() {
+func Init(wg *sync.WaitGroup) {
+	defer wg.Done()
 	//get data from database
 
 	clientObj := alpacaAcc.AlpacaClientContainer{
 		Client: alpacaAcc.Init(),
 	}
-	stockList := []string{"APPL"}
+
+	stockList := []string{"AAPL"}
 	stratList := []string{"GoldenCross"}
 	alpacaAcc.Trader(clientObj.Client, stockList, stratList)
+
 }
 
 // initConfig reads in config file and ENV variables if set.
