@@ -1,6 +1,7 @@
 package alpacaAcc
 
 import (
+	"os"
 	"testing"
 	"time"
 )
@@ -18,6 +19,11 @@ func TestGetHistData(t *testing.T) {
 		now := startTime
 		then := endTime
 		bar := GetHistData(Init(), stock, &now, &then, numBars)
+
+		if Init() == nil {
+			t.Errorf("Getting Account faild: %s", os.Getenv("API_Key_ID")[:4])
+		}
+
 		if bar == nil {
 			t.Error("Strock not found")
 		}
