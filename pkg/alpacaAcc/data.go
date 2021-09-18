@@ -25,4 +25,5 @@ func Tradingdays(Client *alpaca.Client, days int) int {
 	bars := GetHistData(Client, "AAPL", &startTime, &endTime, days)
 
 	return len(bars)
+
 }
