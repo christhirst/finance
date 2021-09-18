@@ -21,7 +21,7 @@ func TestGetHistData(t *testing.T) {
 		bar := GetHistData(Init(), stock, &now, &then, numBars)
 
 		if Init() == nil {
-			t.Errorf("Getting Account faild: %s", os.Getenv("API_Key_ID")[:4])
+			t.Errorf("Getting Account faild: %s", os.Getenv("API_Key_ID"))
 		}
 
 		if bar == nil {
