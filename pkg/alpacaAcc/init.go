@@ -1,7 +1,6 @@
 package alpacaAcc
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
