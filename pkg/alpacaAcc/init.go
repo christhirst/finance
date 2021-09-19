@@ -34,6 +34,5 @@ func Init() *alpaca.Client {
 	os.Setenv(common.EnvApiKeyID, os.Getenv("API_KEY_ID"))
 	os.Setenv(common.EnvApiSecretKey, os.Getenv("SECRET_KEY"))
 	fmt.Printf("Running w/ credentials [%v %v]\n", common.Credentials().ID, common.Credentials().Secret)
-	fmt.Println(os.Environ())
 	return alpaca.NewClient(common.Credentials())
 }
