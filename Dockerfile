@@ -1,5 +1,4 @@
 FROM golang:latest
-ENV API_KEY_ID ${{ secrets.SECRET_KEY }}
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
