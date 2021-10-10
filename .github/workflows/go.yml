@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-    environment: alpaca
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
