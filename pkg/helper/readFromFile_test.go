@@ -3,6 +3,9 @@ package helper
 import "testing"
 
 func TestCompanylist(t *testing.T) {
-	t.Error(companylist())
 
+	_, err := companylist()
+	if err != nil {
+		t.Error(err)
+	}
 }
