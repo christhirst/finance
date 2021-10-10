@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    environment: alpaca
+  build_and_release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,8 +17,14 @@ jobs:
         with:
           go-version: 1.17
 
+      - name: Test
+        env:
+          API_KEY_ID: ${{ secrets.API_KEY_ID }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: go test -v ./...
+
       - name: Build
-        run: go build -v ./...
+        run: go build -v -ldflags ./...
         env:
           API_KEY_ID: ${{ secrets.API_KEY_ID }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
