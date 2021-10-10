@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+    :
     environment: alpaca
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: go test -v ./...
 
       - name: Build
-        run: go build -v ./...
+        run: go build -v -ldflags ./...
         env:
           API_KEY_ID: ${{ secrets.API_KEY_ID }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
