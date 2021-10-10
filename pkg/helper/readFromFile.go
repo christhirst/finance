@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func companylist() ([]byte, error) {
@@ -13,7 +14,7 @@ func companylist() ([]byte, error) {
 	}
 	fmt.Println(path)
 	fmt.Println("####")
-	dat, err := os.ReadFile("/workspace/finance/files/companies.csv")
+	dat, err := os.ReadFile(filepath.Join(path, "../../") + "/files/companies.csv")
 	if err != nil {
 		fmt.Println(err)
 	}
