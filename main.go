@@ -24,8 +24,9 @@ import (
 var wg = sync.WaitGroup{}
 
 func main() {
-	wg.Add(1)
 
-	go cmd.Init(&wg)
-	wg.Wait()
+	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
+	stratList := []string{"GoldenCross"}
+	cmd.Init(stockList, stratList)
+
 }
