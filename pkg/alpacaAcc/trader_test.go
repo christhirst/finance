@@ -6,6 +6,9 @@ func TestTrader(t *testing.T) {
 	client := Init()
 	stratList := []string{"GoldenCross"}
 	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
-	Trader(client, stockList, stratList)
+
+	for _, stock := range stockList {
+		Trader(client, stock, stratList)
+	}
 
 }

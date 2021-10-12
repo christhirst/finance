@@ -8,7 +8,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func Trader(Client *alpaca.Client, stockList []string, strat []string) {
+func Trader(Client *alpaca.Client, stock string, strat []string) {
 	account, err := Client.GetAccount()
 
 	if err != nil {
@@ -16,7 +16,7 @@ func Trader(Client *alpaca.Client, stockList []string, strat []string) {
 	}
 
 	// TODO: Buy at signal
-	for _, stock := range stockList {
+	
 		daysback := 200
 		longAv := 100
 		shortAv := 50
@@ -52,4 +52,4 @@ func Trader(Client *alpaca.Client, stockList []string, strat []string) {
 
 	}
 
-}
+

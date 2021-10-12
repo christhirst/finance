@@ -52,10 +52,7 @@ func Init(stockList []string, stratList []string) {
 	clientObj := alpacaAcc.AlpacaClientContainer{
 		Client: alpacaAcc.Init(),
 	}
-
-	//ticker := time.NewTicker(60 * time.Second)
-
-	runner.Runner(alpacaAcc.Trader, clientObj.Client)
+	runner.Runner(clientObj.Client, stockList, stratList)
 
 }
 
