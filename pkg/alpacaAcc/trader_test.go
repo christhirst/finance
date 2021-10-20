@@ -8,7 +8,7 @@ func TestTrader(t *testing.T) {
 	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
 
 	for _, stock := range stockList {
-		Trader(client, stock, stratList)
+		Trader(client, stock, stratList[0], 100, 50)
 	}
 
 }
