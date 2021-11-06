@@ -25,13 +25,16 @@ func Runner(Client *alpaca.Client, stockList []string, strats []string) {
 
 func AnalyticRunner(Client *alpaca.Client, stockList []string, strats []string) {
 
-	ch := make(chan string)
+	position := make(chan confData)
 
 	for {
-		time.Sleep(60 * time.Second)
+
 		for _, stock := range stockList {
 			for _, strat := range strats {
-				go analyser(Client, stock, strat, ch)
+				go func(strat string) {
+					analyser(Client, stock, strat, position)
+					time.Sleep(60 * time.Second)
+				}(strat)
 			}
 		}
 	}

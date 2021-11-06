@@ -5,7 +5,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, sym *string, account *alpaca.Account) {
+func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, sym *string, account *alpaca.Account, mockPosition float64) (*alpaca.Position, error) {
 
 	orderInformation := alpaca.PlaceOrderRequest{
 		AccountID:   account.ID,
@@ -20,8 +20,17 @@ func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, 
 		//ClientOrderID: alp.currOrder,
 	}
 
-	_, err := client.PlaceOrder(orderInformation)
-	if err != nil {
-		panic(err)
+	if mockPosition < 0 {
+		_, err := client.PlaceOrder(orderInformation)
+		if err != nil {
+			panic(err)
+		}
+		return client.GetPosition(*sym)
+	} else {
+
+		
+
+		return client.GetPosition(*sym)
 	}
+
 }
