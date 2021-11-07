@@ -9,7 +9,7 @@ import (
 
 func TestAnalyser(t *testing.T) {
 	stratList := []string{"GoldenCross"}
-	stockList := []string{"AAPL"} //, "MSFT", "AMZN", "GOOGL", "JD"}
+	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
 	daysback := 500
 	client := alpacaAcc.Init()
 	position := make(chan confData, 20)
