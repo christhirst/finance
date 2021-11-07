@@ -31,14 +31,17 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 		mockPosition := mockaccount.MockPosition{
 			Pos: alpaca.Position{Qty: helper.FloatToDecimal(0)},
 		}
-		position <- confData{
-			"ee",
-			2,
-			2,
-			2,
-		}
+
 		randlongAv := helper.RandomInRange(min+1, 200)
 		randshortAv := helper.RandomInRange(min, randlongAv)
+
+		position <- confData{
+			stock,
+			randlongAv,
+			randshortAv,
+			0,
+		}
+
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData) {
 			for i := 0; i <= len(bars)-rl; i++ {
 				fmt.Println(i)

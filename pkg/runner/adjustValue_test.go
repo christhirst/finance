@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 
 func TestAnalyser(t *testing.T) {
 	stratList := []string{"GoldenCross"}
-	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
+	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	daysback := 500
 	client := alpacaAcc.Init()
 	position := make(chan confData, 20)
@@ -20,6 +21,7 @@ func TestAnalyser(t *testing.T) {
 		for _, strat := range stratList {
 			go analyser(bars, stock, strat, position)
 		}
+		fmt.Println(<-position)
 	}
 
 }
