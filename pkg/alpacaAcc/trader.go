@@ -31,10 +31,10 @@ func Trader(Client *alpaca.Client, stock string, strat string, longAv int, short
 		var adjSide alpaca.Side
 		quantity := decimal.NewFromFloat(float64(100))
 		longAv = len(bars) - daysback - 1
-		if GoldenCross(bars, daysback, shortAv, longAv) == 1 {
+		if GoldenCross(bars[longAv-1:], shortAv) == 1 {
 			adjSide = alpaca.Side("buy")
 			order(*Client, adjSide, quantity, &stock, account, -1)
-		} else if GoldenCross(bars, daysback, shortAv, longAv) == -1 {
+		} else if GoldenCross(bars[longAv-1:], shortAv) == -1 {
 			adjSide = alpaca.Side("sell")
 			order(*Client, adjSide, quantity, &stock, account, -1)
 		}

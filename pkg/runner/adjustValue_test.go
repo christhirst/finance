@@ -7,14 +7,19 @@ import (
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 )
 
-func Testanalyser(t *testing.T) {
+func TestAnalyser(t *testing.T) {
+	stratList := []string{"GoldenCross"}
+	stockList := []string{"AAPL"} //, "MSFT", "AMZN", "GOOGL", "JD"}
+	daysback := 500
 	client := alpacaAcc.Init()
-	position := make(chan confData)
+	t.Error(client.GetAccount())
+	position := make(chan confData, 20)
+	startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 	for {
-		time.Sleep(60 * time.Second)
 		for _, stock := range stockList {
-			for _, strat := range strats {
-				go analyser(client, stock, strat, position)
+			bars := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
+			for _, strat := range stratList {
+				go analyser(bars, stock, strat, position)
 			}
 		}
 	}

@@ -7,20 +7,20 @@ import (
 	"github.com/christhirst/finance/pkg/indicator"
 )
 
-func GoldenCross(bars []alpaca.Bar, daysback int, shortAvD int, longAvD int) int {
-	/* fmt.Println(len(bars))
-	fmt.Println(longAvD + daysback)
-	fmt.Println(longAvD, daysback, shortAvD) */
-	shortBars := bars[(len(bars) - shortAvD - daysback) : len(bars)-daysback]
-	longBars := bars[(len(bars) - longAvD - daysback) : len(bars)-daysback]
+func GoldenCross(lbars []alpaca.Bar, sbarsCount int) int {
+	fmt.Println("####")
+	fmt.Println(len(lbars))
+	fmt.Println(sbarsCount)
+	longBarsOnDay := lbars[(1):]
+	longBarsBeforeDaybefore := lbars[:len(lbars)-1]
 
-	shortBarsDaybefore := bars[(len(bars) - shortAvD - daysback - 1) : len(bars)-daysback-1]
-	longBarsDaybefore := bars[(len(bars) - longAvD - daysback - 1) : len(bars)-daysback-1]
+	shortBarsOnDay := lbars[(sbarsCount - 1):]
+	shortBarsBeforeDaybefore := lbars[sbarsCount : len(lbars)-1]
 
-	shortAv := indicator.Avarage(shortBars)
-	longAv := indicator.Avarage(longBars)
-	shortAvDaybefore := indicator.Avarage(shortBarsDaybefore)
-	longAvDaybefore := indicator.Avarage(longBarsDaybefore)
+	shortAv := indicator.Avarage(shortBarsOnDay)
+	longAv := indicator.Avarage(longBarsOnDay)
+	shortAvDaybefore := indicator.Avarage(shortBarsBeforeDaybefore)
+	longAvDaybefore := indicator.Avarage(longBarsBeforeDaybefore)
 
 	if longAv <= shortAv && longAvDaybefore >= shortAvDaybefore {
 		fmt.Println(longAv, shortAv, longAvDaybefore, shortAvDaybefore)

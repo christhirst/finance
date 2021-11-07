@@ -20,10 +20,7 @@ func GetHistData(c *alpaca.Client, stock string, startdt *time.Time, enddt *time
 }
 
 func Tradingdays(Client *alpaca.Client, days int) int {
-
 	startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
 	bars := GetHistData(Client, "AAPL", &startTime, &endTime, days)
-
 	return len(bars)
-
 }

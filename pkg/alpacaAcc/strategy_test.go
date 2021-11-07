@@ -1,9 +1,12 @@
 package alpacaAcc
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 	"time"
+
+	"github.com/christhirst/finance/pkg/helper"
 )
 
 func TestGoldenCross(t *testing.T) {
@@ -14,8 +17,9 @@ func TestGoldenCross(t *testing.T) {
 	for i := 0; i <= 20; i++ {
 
 		min := 10
-		daysback := rand.Intn(500) + min
-		longAv := rand.Intn(daysback+min) + min
+		daysback := rand.Intn(500) + min + 1
+		fmt.Println(daysback)
+		longAv := helper.RandomInRange(min, daysback)
 
 		startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
 		bars := GetHistData(client, symbol, &startTime, &endTime, daysback+longAv)
@@ -24,7 +28,7 @@ func TestGoldenCross(t *testing.T) {
 		longAv = len(bars) - daysback - 1
 		shortAv := rand.Intn(longAv)
 		for i := 0; i <= daysback; i++ {
-			GoldenCross(bars, daysback-i, shortAv, longAv)
+			fmt.Println(GoldenCross(bars[i:], shortAv))
 		}
 	}
 }
