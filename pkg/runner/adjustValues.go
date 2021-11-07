@@ -27,7 +27,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 	//+ one for minus one day
 	sum := 0.0
 	min := 10
-	for i := 0; i <= 2; i++ {
+	for i := 0; i <= 1; i++ {
 		mockPosition := mockaccount.MockPosition{
 			Pos: alpaca.Position{Qty: helper.FloatToDecimal(0)},
 		}
