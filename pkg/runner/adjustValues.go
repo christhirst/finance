@@ -2,7 +2,6 @@ package runner
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/christhirst/finance/pkg/alpacaAcc"
@@ -23,7 +22,6 @@ type confData struct {
 }
 
 func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData) {
-
 	//+ one for minus one day
 	sum := 0.0
 	min := 10
@@ -31,10 +29,8 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 		mockPosition := mockaccount.MockPosition{
 			Pos: alpaca.Position{Qty: helper.FloatToDecimal(0)},
 		}
-
 		randlongAv := helper.RandomInRange(min+1, 200)
 		randshortAv := helper.RandomInRange(min, randlongAv)
-
 		position <- confData{
 			stock,
 			randlongAv,
@@ -49,17 +45,9 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
 					//sicherheit mehr shares
-					//quantity := decimal.NewFromFloat(float64(100))
-					fmt.Println("len(bars)")
-					fmt.Fprintf(os.Stdout, "index %d", i)
-					fmt.Fprintf(os.Stdout, "barlen %d", len(b))
-					fmt.Fprintf(os.Stdout, "rl %d", rl)
-					fmt.Fprintf(os.Stdout, "bi:rl+i %d", len(b[i:rl+i]))
-					fmt.Fprintf(os.Stdout, "b[i:] %d !!", len(b[i:]))
 					if alpacaAcc.GoldenCross(b[i:rl+i], rs) == 1 {
 						//adjSide = alpaca.Side("buy")
 						//fake buy
-
 						mockPosition.AddQty(1)
 						//order(*Client, adjSide, quantity, &stock, account)
 					} else if alpacaAcc.GoldenCross(b[i:rl+i], rs) == -1 {
@@ -67,7 +55,6 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 						//fake sell
 						mockPosition.AddQty(-1)
 						//order(*Client, adjSide, quantity, &stock, account)
-
 					}
 				}
 				/* 	if strat[1] == "engulfBullCandle" {
@@ -76,7 +63,6 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 
 					}
 				} */
-
 			}
 
 		}(bars, randshortAv, randlongAv, position)
