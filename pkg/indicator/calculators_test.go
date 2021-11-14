@@ -1,16 +1,9 @@
 package indicator
 
-import (
-	"math/rand"
-	"testing"
-
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
-)
-
-func GenBars() []alpaca.Bar {
+/* func TestGenBars() []alpaca.Bar {
 	var barsList []alpaca.Bar
 
-	for i := 0; i < 2000; i++ {
+	for i := 0; i < 20; i++ {
 		newBar := alpaca.Bar{
 			Open:  rand.Float32() * 10000,
 			Close: rand.Float32() * 10000,
@@ -28,3 +21,4 @@ func TestAvarage(t *testing.T) {
 	}
 
 }
+*/

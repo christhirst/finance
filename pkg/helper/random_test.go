@@ -6,7 +6,7 @@ import (
 )
 
 func TestRandom(t *testing.T) {
-	max := 20
+	max := 5
 	for i := 1; i <= max; i++ {
 		rand := random(i)
 		if rand < 0 && rand < max {
@@ -16,7 +16,7 @@ func TestRandom(t *testing.T) {
 }
 
 func TestRandomInRange(t *testing.T) {
-	for i := 1; i <= 100; i += 10 {
+	for i := 1; i <= 50; i += 10 {
 		if RandomInRange(1, i+1) < i && RandomInRange(1, i+1) > i {
 			t.Errorf("%d", RandomInRange(1, i+1))
 		}
@@ -24,7 +24,7 @@ func TestRandomInRange(t *testing.T) {
 }
 
 func TestRandomString(t *testing.T) {
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 5; i++ {
 		s := RandomString(random(i))
 		if reflect.TypeOf(s).String() != reflect.String.String() {
 			t.Error(reflect.TypeOf(s).String())
