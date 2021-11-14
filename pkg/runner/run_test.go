@@ -19,7 +19,7 @@ func TestAnalyticRunner(t *testing.T) {
 	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	stratList := []string{"GoldenCross"}
 	client := alpacaAcc.Init()
-	runs := 50
+	runs := 10
 	daysback := 500
 	position := make(chan confData, runs)
 
