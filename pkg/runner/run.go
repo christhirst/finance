@@ -23,16 +23,18 @@ func Runner(Client *alpaca.Client, stockList []string, strats []string) {
 	}
 }
 
-func AnalyticRunner(Client *alpaca.Client, stockList []string, strats []string) {
+func AnalyticRunner(Client *alpaca.Client, stockList []string, stratList []string) confData {
 	daysback := 500
-	position := make(chan confData)
+	runs := 50
+	position := make(chan confData, runs)
+
 	for {
 		for _, stock := range stockList {
 			startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 			bars := alpacaAcc.GetHistData(Client, stock, &startTime, &endTime, daysback)
-			for _, strat := range strats {
+			for _, strat := range stratList {
 				go func(strat string) {
-					analyser(bars, stock, strat, position)
+					analyser(bars, stock, strat, position, runs)
 					time.Sleep(60 * time.Second)
 				}(strat)
 			}

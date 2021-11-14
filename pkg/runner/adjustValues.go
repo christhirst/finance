@@ -1,8 +1,6 @@
 package runner
 
 import (
-	"fmt"
-
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/christhirst/finance/pkg/helper"
@@ -21,39 +19,37 @@ type confData struct {
 	gain    float64
 }
 
-func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData) {
+func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int) {
 	//+ one for minus one day
 	sum := 0.0
 	min := 10
-	for i := 0; i <= 1; i++ {
-		mockPosition := mockaccount.MockPosition{
-			Pos: alpaca.Position{Qty: helper.FloatToDecimal(0)},
-		}
-		randlongAv := helper.RandomInRange(min+1, 200)
-		randshortAv := helper.RandomInRange(min, randlongAv)
-		position <- confData{
-			stock,
-			randlongAv,
-			randshortAv,
-			0,
-		}
+	MockPortfolio := new(mockaccount.MockPortfolio)
+	MockPortfolio.Pos = make(map[string]alpaca.Position)
 
+	//MockPortfolio.Pos = make(map[string]alpaca.Position)
+
+	for i := 0; i <= runs; i++ {
+		MockPortfolio.Pos[stock] = alpaca.Position{
+			Qty: helper.FloatToDecimal(0),
+		}
+		randlongAv := helper.RandomInRange(min+1, 100)
+		randshortAv := i + 10
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData) {
 			for i := 0; i <= len(bars)-rl; i++ {
-				fmt.Println(i)
-
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
 					//sicherheit mehr shares
 					if alpacaAcc.GoldenCross(b[i:rl+i], rs) == 1 {
 						//adjSide = alpaca.Side("buy")
 						//fake buy
-						mockPosition.AddQty(1)
+						MockPortfolio.AddBuy(stock, 1, b[i : rl+i][len(b[i:rl+i])-1].Close)
+						MockPortfolio.Cash = MockPortfolio.Cash + b[i : rl+i][len(b[i:rl+i])-1].Close
 						//order(*Client, adjSide, quantity, &stock, account)
 					} else if alpacaAcc.GoldenCross(b[i:rl+i], rs) == -1 {
 						//adjSide = alpaca.Side("sell")
 						//fake sell
-						mockPosition.AddQty(-1)
+						MockPortfolio.AddBuy(stock, -1, b[i : rl+i][len(b[i:rl+i])-1].Close)
+						MockPortfolio.Cash = MockPortfolio.Cash - b[i : rl+i][len(b[i:rl+i])-1].Close
 						//order(*Client, adjSide, quantity, &stock, account)
 					}
 				}
@@ -63,6 +59,13 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 
 					}
 				} */
+			}
+
+			position <- confData{
+				stock,
+				randlongAv,
+				randshortAv,
+				float64(MockPortfolio.Cash),
 			}
 
 		}(bars, randshortAv, randlongAv, position)

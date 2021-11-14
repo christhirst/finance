@@ -1,12 +1,26 @@
 package helper
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 func random(i int) int {
-
+	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(i)
 }
 
 func RandomInRange(min int, max int) int {
+	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min) + min
+}
+
+func RandomString(count int) string {
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]rune, count)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
