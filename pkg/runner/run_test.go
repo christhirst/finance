@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"sync"
 	"testing"
 	"time"
 
@@ -22,13 +23,13 @@ func TestAnalyticRunner(t *testing.T) {
 	runs := 10
 	daysback := 500
 	position := make(chan confData, runs)
-
+	var wg sync.WaitGroup
 	for _, stock := range stockList {
 		startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 		bars := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
 		for _, strat := range stratList {
 			go func(strat string) {
-				analyser(bars, stock, strat, position, runs)
+				analyser(bars, stock, strat, position, runs, wg)
 			}(strat)
 		}
 	}

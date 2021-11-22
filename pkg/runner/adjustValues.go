@@ -1,6 +1,9 @@
 package runner
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/christhirst/finance/pkg/helper"
@@ -19,7 +22,7 @@ type confData struct {
 	gain    float64
 }
 
-func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int) {
+func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg sync.WaitGroup) {
 	//+ one for minus one day
 	sum := 0.0
 	min := 10
@@ -29,12 +32,18 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 	//MockPortfolio.Pos = make(map[string]alpaca.Position)
 
 	for i := 0; i <= runs; i++ {
+
+		fmt.Println(i)
+
 		MockPortfolio.Pos[stock] = alpaca.Position{
 			Qty: helper.FloatToDecimal(0),
 		}
 		randlongAv := helper.RandomInRange(min+1, 100)
 		randshortAv := i + 10
-		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData) {
+		wg.Add(1)
+		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData, wg *sync.WaitGroup) {
+			fmt.Println("##1##")
+
 			for i := 0; i <= len(bars)-rl; i++ {
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
@@ -67,13 +76,26 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 				randshortAv,
 				float64(MockPortfolio.Cash),
 			}
+			go func() {
+				defer wg.Done()
+			}()
+		}(bars, randshortAv, randlongAv, position, &wg)
 
-		}(bars, randshortAv, randlongAv, position)
+		fmt.Println("####")
+		//abarbeiten
+		fmt.Println("##eeeee##")
 		pp := <-position
+		fmt.Println("##eefeee##")
 		if sum < pp.gain {
+			fmt.Println("##4##")
 			sum = pp.gain
 		}
-
+		fmt.Println("##6##")
+		select {
+		case msg1 := <-position:
+			fmt.Println(msg1)
+		}
+		fmt.Println("##8##")
 	}
 
 }
