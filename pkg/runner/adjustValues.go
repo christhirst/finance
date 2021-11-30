@@ -43,7 +43,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 		wg.Add(1)
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData, wg *sync.WaitGroup) {
 			fmt.Println("##1##")
-
+			//todo |----| bars is long; it has to be used over the hole bar range
 			for i := 0; i <= len(bars)-rl; i++ {
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
@@ -81,6 +81,10 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 			}()
 		}(bars, randshortAv, randlongAv, position, &wg)
 
+	}
+
+	for {
+
 		fmt.Println("####")
 		//abarbeiten
 		fmt.Println("##eeeee##")
@@ -90,12 +94,14 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 			fmt.Println("##4##")
 			sum = pp.gain
 		}
+
 		fmt.Println("##6##")
 		select {
 		case msg1 := <-position:
 			fmt.Println(msg1)
 		}
 		fmt.Println("##8##")
+
 	}
 
 }

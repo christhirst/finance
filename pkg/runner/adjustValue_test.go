@@ -15,7 +15,7 @@ func TestAnalyser(t *testing.T) {
 	runs := 10
 	var wg sync.WaitGroup
 	client := alpacaAcc.Init()
-	position := make(chan confData, 20)
+	position := make(chan confData)
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 
 	for _, stock := range stockList {
@@ -25,7 +25,7 @@ func TestAnalyser(t *testing.T) {
 		}
 	}
 	wg.Wait()
-	time.Sleep(time.Second * 5)
+	//time.Sleep(time.Second * 50)
 	ss := <-position
 
 	t.Errorf("%f", ss.gain)
