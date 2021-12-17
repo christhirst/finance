@@ -1,30 +1,36 @@
 package alpacaAcc
 
 import (
+	"fmt"
+
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/christhirst/finance/pkg/indicator"
 )
 
-func GoldenCross(lbars []alpaca.Bar, sbarsCount int) int {
-	/* fmt.Println("####")
-	fmt.Println(len(lbars))
-	fmt.Println(sbarsCount) */
-	longBarsOnDay := lbars[(1):]
-	longBarsBeforeDaybefore := lbars[:len(lbars)-1]
+func GoldenCross(lbars []alpaca.Bar, shortAv int) int {
 
-	shortBarsOnDay := lbars[(sbarsCount - 1):]
-	shortBarsBeforeDaybefore := lbars[sbarsCount : len(lbars)-1]
+	if len(lbars) < shortAv {
+		fmt.Println("##Panic##")
+		fmt.Println(len(lbars))
+		fmt.Println(shortAv)
+	}
+	longBarsOnDay := lbars[1:]
+	longBarsBeforeDaybefore := lbars[:len(lbars)]
 
-	shortAv := indicator.Avarage(shortBarsOnDay)
-	longAv := indicator.Avarage(longBarsOnDay)
+	shortBarsOnDay := lbars[len(lbars)-shortAv:]
+	shortBarsBeforeDaybefore := lbars[len(lbars)-shortAv-1 : len(lbars)-1]
+
+	shortAvf := indicator.Avarage(shortBarsOnDay)
 	shortAvDaybefore := indicator.Avarage(shortBarsBeforeDaybefore)
+
+	longAv := indicator.Avarage(longBarsOnDay)
 	longAvDaybefore := indicator.Avarage(longBarsBeforeDaybefore)
 
-	if longAv <= shortAv && longAvDaybefore >= shortAvDaybefore {
+	if longAv <= shortAvf && longAvDaybefore >= shortAvDaybefore {
 		//fmt.Println(longAv, shortAv, longAvDaybefore, shortAvDaybefore)
 		return 1
 	}
-	if longAv >= shortAv && longAvDaybefore <= shortAvDaybefore {
+	if longAv >= shortAvf && longAvDaybefore <= shortAvDaybefore {
 		return -1
 	}
 	return 0

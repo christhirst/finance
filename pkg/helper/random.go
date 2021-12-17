@@ -3,6 +3,8 @@ package helper
 import (
 	"math/rand"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 func random(i int) int {
@@ -23,4 +25,8 @@ func RandomString(count int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func RandomDeci(i int) decimal.Decimal {
+	return decimal.NewFromInt(int64(random(i)))
 }

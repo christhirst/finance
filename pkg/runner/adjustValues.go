@@ -22,7 +22,7 @@ type confData struct {
 	gain    float64
 }
 
-func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg sync.WaitGroup) {
+func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg *sync.WaitGroup) {
 	//+ one for minus one day
 	sum := 0.0
 	min := 10
@@ -45,6 +45,13 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 			fmt.Println("##1##")
 			//todo |----| bars is long; it has to be used over the hole bar range
 			for i := 0; i <= len(bars)-rl; i++ {
+				if rs > rl-5 {
+					break
+					fmt.Println("##PANIC##")
+					fmt.Println(rs)
+					fmt.Println(rl)
+				}
+
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
 					//sicherheit mehr shares
@@ -52,6 +59,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 						//adjSide = alpaca.Side("buy")
 						//fake buy
 						MockPortfolio.AddBuy(stock, 1, b[i : rl+i][len(b[i:rl+i])-1].Close)
+
 						MockPortfolio.Cash = MockPortfolio.Cash + b[i : rl+i][len(b[i:rl+i])-1].Close
 						//order(*Client, adjSide, quantity, &stock, account)
 					} else if alpacaAcc.GoldenCross(b[i:rl+i], rs) == -1 {
@@ -79,7 +87,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 			go func() {
 				defer wg.Done()
 			}()
-		}(bars, randshortAv, randlongAv, position, &wg)
+		}(bars, randshortAv, randlongAv, position, wg)
 
 	}
 

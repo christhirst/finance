@@ -21,7 +21,7 @@ func TestAnalyser(t *testing.T) {
 	for _, stock := range stockList {
 		bars := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
 		for _, strat := range stratList {
-			go analyser(bars, stock, strat, position, runs, wg)
+			go analyser(bars, stock, strat, position, runs, &wg)
 		}
 	}
 	wg.Wait()
