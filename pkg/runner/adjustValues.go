@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
@@ -31,9 +32,12 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 		MockPortfolio.Pos[stock] = alpaca.Position{
 			Qty: helper.FloatToDecimal(0),
 		}
+
 		randlongAv := helper.RandomInRange(min+1, 100)
 		randshortAv := i + 10
+
 		wg.Add(1)
+
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData, wg *sync.WaitGroup) {
 			//todo |----| bars is long; it has to be used over the hole bar range
 			for i := 0; i <= len(bars)-rl; i++ {
@@ -71,6 +75,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 				randshortAv,
 				float64(MockPortfolio.Cash),
 			}
+			fmt.Printf("position: %v\n", len(position))
 			go func() {
 				defer wg.Done()
 			}()
