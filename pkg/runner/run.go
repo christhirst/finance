@@ -14,10 +14,11 @@ func doSomething(s string) {
 }
 
 func Runner(Client *alpaca.Client, stockList []string, strats []string) {
+	errorChan := make(chan error)
 	for {
 		for _, stock := range stockList {
 			for _, strat := range strats {
-				go alpacaAcc.Trader(Client, stock, strat, 100, 50)
+				go alpacaAcc.Trader(Client, stock, strat, 100, 50, errorChan)
 			}
 		}
 	}
@@ -31,7 +32,7 @@ func AnalyticRunner(Client *alpaca.Client, stockList []string, stratList []strin
 	for {
 		for _, stock := range stockList {
 			startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
-			bars := alpacaAcc.GetHistData(Client, stock, &startTime, &endTime, daysback)
+			bars, _ := alpacaAcc.GetHistData(Client, stock, &startTime, &endTime, daysback)
 			for _, strat := range stratList {
 				go func(strat string) {
 					analyser(bars, stock, strat, position, runs, &wg)

@@ -8,21 +8,26 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func Trader(Client *alpaca.Client, stock string, strat string, longAv int, shortAv int) error {
+func Trader(Client *alpaca.Client, stock string, strat string, longAv int, shortAv int, ErrorChan chan<- error) {
 	account, err := Client.GetAccount()
 
 	if err != nil {
-		return err
+		ErrorChan <- err
 	}
-
 	// TODO: Buy at signal
-
 	daysback := 200
 
 	//+ one for minus one day
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-	daysback, shortAv = Tradingdays(Client, daysback), Tradingdays(Client, shortAv)
-	bars := GetHistData(Client, stock, &startTime, &endTime, daysback+longAv)
+	daysback, err = Tradingdays(Client, daysback)
+	ErrorChan <- err
+	shortAv, err = Tradingdays(Client, shortAv)
+	ErrorChan <- err
+	bars, err := GetHistData(Client, stock, &startTime, &endTime, daysback+longAv)
+
+	if err != nil {
+		ErrorChan <- err
+	}
 
 	position, _ := Client.GetAsset(stock)
 	fmt.Println(position)
@@ -46,5 +51,4 @@ func Trader(Client *alpaca.Client, stock string, strat string, longAv int, short
 
 		}
 	} */
-	return err
 }

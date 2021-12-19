@@ -19,7 +19,7 @@ func TestAnalyser(t *testing.T) {
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 
 	for _, stock := range stockList {
-		bars := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
+		bars, _ := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
 		for _, strat := range stratList {
 			go analyser(bars, stock, strat, position, runs, &wg)
 		}

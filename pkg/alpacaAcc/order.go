@@ -20,7 +20,7 @@ func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, 
 		//ClientOrderID: alp.currOrder,
 	}
 
-	if mockPosition < 0 {
+	if mockPosition > 0 {
 		_, err := client.PlaceOrder(orderInformation)
 		if err != nil {
 			panic(err)

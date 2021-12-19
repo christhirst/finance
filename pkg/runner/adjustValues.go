@@ -29,12 +29,7 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 	MockPortfolio := new(mockaccount.MockPortfolio)
 	MockPortfolio.Pos = make(map[string]alpaca.Position)
 
-	//MockPortfolio.Pos = make(map[string]alpaca.Position)
-
 	for i := 0; i <= runs; i++ {
-
-		fmt.Println(i)
-
 		MockPortfolio.Pos[stock] = alpaca.Position{
 			Qty: helper.FloatToDecimal(0),
 		}
@@ -42,16 +37,11 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 		randshortAv := i + 10
 		wg.Add(1)
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData, wg *sync.WaitGroup) {
-			fmt.Println("##1##")
 			//todo |----| bars is long; it has to be used over the hole bar range
 			for i := 0; i <= len(bars)-rl; i++ {
 				if rs > rl-5 {
 					break
-					fmt.Println("##PANIC##")
-					fmt.Println(rs)
-					fmt.Println(rl)
 				}
-
 				if strat == "GoldenCross" {
 					//var adjSide alpaca.Side
 					//sicherheit mehr shares
@@ -77,7 +67,6 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 					}
 				} */
 			}
-
 			position <- confData{
 				stock,
 				randlongAv,
@@ -92,24 +81,13 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 	}
 
 	for {
-
-		fmt.Println("####")
-		//abarbeiten
-		fmt.Println("##eeeee##")
 		pp := <-position
-		fmt.Println("##eefeee##")
 		if sum < pp.gain {
-			fmt.Println("##4##")
 			sum = pp.gain
 		}
-
-		fmt.Println("##6##")
 		select {
 		case msg1 := <-position:
 			fmt.Println(msg1)
 		}
-		fmt.Println("##8##")
-
 	}
-
 }

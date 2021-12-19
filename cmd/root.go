@@ -53,7 +53,6 @@ func Init(stockList []string, stratList []string) {
 		Client: alpacaAcc.Init(),
 	}
 	runner.Runner(clientObj.Client, stockList, stratList)
-
 }
 
 // initConfig reads in config file and ENV variables if set.

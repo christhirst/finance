@@ -16,9 +16,11 @@ func TestGoldenCross(t *testing.T) {
 		daysback := rand.Intn(500) + min + 1
 		longAv := helper.RandomInRange(min, daysback)
 		startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-		bars := GetHistData(client, symbol, &startTime, &endTime, daysback+longAv)
-		daysback = Tradingdays(client, daysback)
-
+		bars, err := GetHistData(client, symbol, &startTime, &endTime, daysback+longAv)
+		daysback, err = Tradingdays(client, daysback)
+		if err != nil {
+			t.Error(err.Error())
+		}
 		longAv = len(bars) - daysback - 1
 		shortAv := rand.Intn(longAv - 1)
 		for i := 0; i <= daysback; i++ {
