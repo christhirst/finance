@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -17,33 +16,31 @@ func TestAnalyser(t *testing.T) {
 	runs := 10
 	var wg sync.WaitGroup
 	client := alpacaAcc.Init()
-	position := make(chan confData, 20)
+	chanCount := len(stratList) * len(stockList) * (runs + 1)
+
+	position := make(chan confData, chanCount)
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 
 	for _, stock := range stockList {
 		bars, _ := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
 
 		for _, strat := range stratList {
+			wg.Add(1)
 			go analyser(bars, stock, strat, position, runs, &wg)
 
 		}
-		fmt.Printf("position: %v\n", wg)
 	}
 	wg.Wait()
-	fmt.Printf("position: %v\n", len(position))
 	close(position)
-	fmt.Printf("position: %v\n", len(position))
 	for p := range position {
-		t.Errorf("%f", p.gain)
-		if sum < p.gain {
+		if sum == p.gain {
 			t.Errorf("%f", p.gain)
 			sum = p.gain
 		}
-		if p.gain != 0 {
+		if p.gain == 1 {
 			t.Errorf("%f", p.gain)
 			t.Errorf("%d", p.longAv)
 			t.Errorf("%d", p.shortAv)
 		}
 	}
-	t.Errorf("%v", "mmm")
 }

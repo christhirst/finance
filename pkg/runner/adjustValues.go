@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
@@ -23,20 +22,21 @@ type confData struct {
 }
 
 func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg *sync.WaitGroup) {
+	defer wg.Done()
 	//+ one for minus one day
 	min := 10
 	MockPortfolio := new(mockaccount.MockPortfolio)
 	MockPortfolio.Pos = make(map[string]alpaca.Position)
 
 	for i := 0; i <= runs; i++ {
+		wg.Add(1)
+		MockPortfolio.Mu.Lock()
 		MockPortfolio.Pos[stock] = alpaca.Position{
 			Qty: helper.FloatToDecimal(0),
 		}
-
+		MockPortfolio.Mu.Unlock()
 		randlongAv := helper.RandomInRange(min+1, 100)
 		randshortAv := i + 10
-
-		wg.Add(1)
 
 		go func(b []alpaca.Bar, rs int, rl int, ch <-chan confData, wg *sync.WaitGroup) {
 			//todo |----| bars is long; it has to be used over the hole bar range
@@ -51,9 +51,8 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 						//adjSide = alpaca.Side("buy")
 						//fake buy
 						MockPortfolio.AddBuy(stock, 1, b[i : rl+i][len(b[i:rl+i])-1].Close)
-
 						MockPortfolio.Cash = MockPortfolio.Cash + b[i : rl+i][len(b[i:rl+i])-1].Close
-						//order(*Client, adjSide, quantity, &stock, account)
+						 //order(*Client, adjSide, quantity, &stock, account)
 					} else if alpacaAcc.GoldenCross(b[i:rl+i], rs) == -1 {
 						//adjSide = alpaca.Side("sell")
 						//fake sell
@@ -75,7 +74,6 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 				randshortAv,
 				float64(MockPortfolio.Cash),
 			}
-			fmt.Printf("position: %v\n", len(position))
 			go func() {
 				defer wg.Done()
 			}()

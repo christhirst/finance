@@ -8,7 +8,7 @@ import (
 )
 
 type MockPortfolio struct {
-	mu  sync.Mutex
+	Mu  sync.Mutex
 	Pos map[string]alpaca.Position
 	//Currency string          `json:"currency"`
 	Cash float32 `json:"cash"`
@@ -17,7 +17,7 @@ type MockPortfolio struct {
 func (m *MockPortfolio) AddBuy(s string, fq float64, fp float32) {
 	newQty := decimal.NewFromFloat(fq)
 	newPrice := decimal.NewFromFloat(fq)
-	m.mu.Lock()
+	m.Mu.Lock()
 	if entry, ok := m.Pos[s]; ok {
 		// Then we modify the copy
 		if !newQty.Add(entry.Qty).Equals(decimal.NewFromFloat(0)) {
@@ -29,7 +29,7 @@ func (m *MockPortfolio) AddBuy(s string, fq float64, fp float32) {
 		// Then we reassign map entry
 
 		m.Pos[s] = entry
-		m.mu.Unlock()
+		m.Mu.Unlock()
 
 	}
 
