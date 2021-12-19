@@ -27,9 +27,6 @@ func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, 
 		}
 		return client.GetPosition(*sym)
 	} else {
-
-		
-
 		return client.GetPosition(*sym)
 	}
 

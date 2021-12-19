@@ -26,7 +26,6 @@ func TestGetHistData(t *testing.T) {
 		if client == nil {
 			t.Errorf("Getting Account faild: %s", os.Getenv("API_Key_ID"))
 		}
-
 		if bar == nil {
 			t.Error("No Data could be fetched", stock, now, then)
 		}

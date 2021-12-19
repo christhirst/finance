@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
@@ -24,7 +23,6 @@ type confData struct {
 
 func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg *sync.WaitGroup) {
 	//+ one for minus one day
-	sum := 0.0
 	min := 10
 	MockPortfolio := new(mockaccount.MockPortfolio)
 	MockPortfolio.Pos = make(map[string]alpaca.Position)
@@ -80,14 +78,4 @@ func analyser(bars []alpaca.Bar, stock string, strat string, position chan confD
 
 	}
 
-	for {
-		pp := <-position
-		if sum < pp.gain {
-			sum = pp.gain
-		}
-		select {
-		case msg1 := <-position:
-			fmt.Println(msg1)
-		}
-	}
 }

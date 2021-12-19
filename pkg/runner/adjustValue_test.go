@@ -9,6 +9,7 @@ import (
 )
 
 func TestAnalyser(t *testing.T) {
+	sum := 0.0
 	stratList := []string{"GoldenCross"}
 	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	daysback := 500
@@ -25,11 +26,17 @@ func TestAnalyser(t *testing.T) {
 		}
 	}
 	wg.Wait()
-	//time.Sleep(time.Second * 50)
-	ss := <-position
 
-	t.Errorf("%f", ss.gain)
-	t.Errorf("%d", ss.longAv)
-	t.Errorf("%d", ss.shortAv)
+	close(position)
+	for p := range position {
+		if sum < p.gain {
+			sum = p.gain
+		}
+		if p.gain != 0 {
+			t.Errorf("%f", p.gain)
+			t.Errorf("%d", p.longAv)
+			t.Errorf("%d", p.shortAv)
+		}
+	}
 
 }

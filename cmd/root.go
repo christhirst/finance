@@ -46,9 +46,7 @@ func Execute() {
 }
 
 func Init(stockList []string, stratList []string) {
-
 	//get data from database
-
 	clientObj := alpacaAcc.AlpacaClientContainer{
 		Client: alpacaAcc.Init(),
 	}
