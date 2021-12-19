@@ -1,11 +1,11 @@
 package cmd
 
-/*
+
 import "testing"
 
 func TestInit(t *testing.T) {
-	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
+	stockList := []string{"GOOGL", "JD"}
 	stratList := []string{"GoldenCross"}
 	Init(stockList, stratList)
 
-} */
+} 

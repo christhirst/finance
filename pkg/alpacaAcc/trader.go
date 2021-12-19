@@ -8,11 +8,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func Trader(Client *alpaca.Client, stock string, strat string, longAv int, shortAv int) {
+func Trader(Client *alpaca.Client, stock string, strat string, longAv int, shortAv int) error {
 	account, err := Client.GetAccount()
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// TODO: Buy at signal
@@ -46,5 +46,5 @@ func Trader(Client *alpaca.Client, stock string, strat string, longAv int, short
 
 		}
 	} */
-
+	return err
 }

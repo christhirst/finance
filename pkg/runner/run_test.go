@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -12,11 +11,8 @@ import (
 func TestRunner(t *testing.T) {
 	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	stratList := []string{"GoldenCross"}
-	fmt.Print(stockList)
 	client := alpacaAcc.Init()
-	fmt.Print(stratList)
 	Runner(client, stockList, stratList)
-
 }
 
 func TestAnalyticRunner(t *testing.T) {
