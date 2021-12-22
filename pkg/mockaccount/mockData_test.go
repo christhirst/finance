@@ -14,11 +14,11 @@ var tests = []struct {
 
 func TestMockBars(t *testing.T) {
 	//var want alpaca.Bar
-	strength := 0.01
+	strength := 0.5
 	for _, v := range tests {
 		got := MockBar(v.index, v.randLevel, strength)
 
-		if got.Close >= float32(v.index) {
+		if got.Close > float32(20)*float32(v.randLevel) || got.Close <= float32(10) {
 			t.Errorf("got %f want %f", got.Close, v.index)
 
 		}
