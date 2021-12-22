@@ -7,7 +7,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func random(i int) int {
+func Random(i int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(i)
 }
@@ -28,5 +28,5 @@ func RandomString(count int) string {
 }
 
 func RandomDeci(i int) decimal.Decimal {
-	return decimal.NewFromInt(int64(random(i)))
+	return decimal.NewFromInt(int64(Random(i)))
 }
