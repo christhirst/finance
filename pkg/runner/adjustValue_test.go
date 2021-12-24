@@ -15,13 +15,10 @@ func TestAnalyser(t *testing.T) {
 	var wg sync.WaitGroup
 
 	chanCount := len(stratList) * len(stockList) * (runs + 1)
-
 	position := make(chan confData, chanCount)
-	//startTime, endTime := time.Unix(time.Now().Unix()-int64((daysback+1)*24*60*60), 0), time.Now()
 
 	for _, stock := range stockList {
 		bars := mockaccount.CreateMockBars(500, 3, 20)
-		//bars, _ := alpacaAcc.GetHistData(client, stock, &startTime, &endTime, daysback)
 
 		for _, strat := range stratList {
 			wg.Add(1)
