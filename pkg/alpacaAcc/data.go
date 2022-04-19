@@ -10,7 +10,6 @@ import (
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata/stream"
-	"golang.org/x/net/websocket"
 )
 
 type StockData struct {
@@ -62,46 +61,6 @@ func GetLiveData(stock string) {
 		log.Fatalf("could not establish connection, error: %s", err)
 	}
 	fmt.Println("established connection")
-
-	origin := "https://data.alpaca.markets/v2"
-	url := "wss://stream.data.alpaca.markets/v2/iex"
-	ws, err := websocket.Dial(url, "", origin)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ee := "{\"action\": \"auth\", \"key\": \"" + ii + "\", \"secret\": \"" + oo + "\"}"
-
-	var msg = make([]byte, 512)
-	var n int
-	if n, err = ws.Read(msg); err != nil {
-		log.Fatal(err)
-	}
-	if _, err := ws.Write([]byte(ee)); err != nil {
-		log.Fatal(err)
-	}
-	if n, err = ws.Read(msg); err != nil {
-		log.Fatal(err)
-	}
-	op := "{\"action\":\"subscribe\",\"trades\":[\"AAPL\"]}"
-	if _, err := ws.Write([]byte(op)); err != nil {
-		log.Fatal(err)
-	}
-	if n, err = ws.Read(msg); err != nil {
-		log.Fatal(err)
-	}
-	ws.NewFrameReader()
-	for i := 1; i < 5; i++ {
-		if n, err = ws.Read(msg); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("Received: %s.\n", msg[:n])
-	}
-	if n, err = ws.Read(msg); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Received: %s.\n", msg[:n])
 
 }
 
