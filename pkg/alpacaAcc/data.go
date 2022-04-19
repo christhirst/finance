@@ -1,16 +1,107 @@
 package alpacaAcc
 
 import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"sync/atomic"
 	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata/stream"
+	"golang.org/x/net/websocket"
 )
 
 type StockData struct {
 	lastPrice float32
 }
 
-func GetLiveData(c *alpaca.Client, stock string) {
+func GetLiveData(stock string) {
+	ii := os.Getenv("API_KEY_ID")
+	oo := os.Getenv("SECRET_KEY")
+	var tradeCount, quoteCount, barCount int32
+	// modify these according to your needs
+	tradeHandler := func(t stream.Trade) {
+		atomic.AddInt32(&tradeCount, 1)
+	}
+	quoteHandler := func(q stream.Quote) {
+		atomic.AddInt32(&quoteCount, 1)
+	}
+	barHandler := func(b stream.Bar) {
+		atomic.AddInt32(&barCount, 1)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Creating a client that connexts to iex
+	c := stream.NewStocksClient(
+		"iex",
+		// configuring initial subscriptions and handlers
+		stream.WithTrades(tradeHandler, "SPY"),
+		stream.WithQuotes(quoteHandler, "AAPL", "SPY"),
+		stream.WithBars(barHandler, "AAPL", "SPY"),
+		stream.WithCredentials(ii, oo),
+
+		// use stream.WithDailyBars to subscribe to daily bars too
+		// use stream.WithCredentials to manually override envvars
+		// use stream.WithHost to manually override envvar
+		// use stream.WithLogger to use your own logger (i.e. zap, logrus) instead of log
+		// use stream.WithProcessors to use multiple processing gourotines
+		// use stream.WithBufferSize to change buffer size
+		// use stream.WithReconnectSettings to change reconnect settings
+	)
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+			fmt.Println("trades:", tradeCount, "quotes:", quoteCount, "bars:", barCount)
+		}
+	}()
+
+	if err := c.Connect(ctx); err != nil {
+		log.Fatalf("could not establish connection, error: %s", err)
+	}
+	fmt.Println("established connection")
+
+	origin := "https://data.alpaca.markets/v2"
+	url := "wss://stream.data.alpaca.markets/v2/iex"
+	ws, err := websocket.Dial(url, "", origin)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ee := "{\"action\": \"auth\", \"key\": \"" + ii + "\", \"secret\": \"" + oo + "\"}"
+
+	var msg = make([]byte, 512)
+	var n int
+	if n, err = ws.Read(msg); err != nil {
+		log.Fatal(err)
+	}
+	if _, err := ws.Write([]byte(ee)); err != nil {
+		log.Fatal(err)
+	}
+	if n, err = ws.Read(msg); err != nil {
+		log.Fatal(err)
+	}
+	op := "{\"action\":\"subscribe\",\"trades\":[\"AAPL\"]}"
+	if _, err := ws.Write([]byte(op)); err != nil {
+		log.Fatal(err)
+	}
+	if n, err = ws.Read(msg); err != nil {
+		log.Fatal(err)
+	}
+	ws.NewFrameReader()
+	for i := 1; i < 5; i++ {
+		if n, err = ws.Read(msg); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Received: %s.\n", msg[:n])
+	}
+	if n, err = ws.Read(msg); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Received: %s.\n", msg[:n])
 
 }
 

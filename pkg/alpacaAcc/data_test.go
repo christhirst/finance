@@ -8,6 +8,9 @@ import (
 )
 
 func TestGetLiveData(t *testing.T) {
+	stocklist := []string{"AAPL"}
+	GetLiveData(stocklist[0])
+	t.Error()
 
 }
 
