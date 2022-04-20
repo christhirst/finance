@@ -3,6 +3,7 @@ module github.com/christhirst/finance
 go 1.16
 
 require (
+	github.com/RobinUS2/golang-moving-average v1.0.0
 	github.com/alpacahq/alpaca-trade-api-go v1.9.0
 	github.com/alpacahq/alpaca-trade-api-go/v2 v2.4.0
 	github.com/shopspring/decimal v1.2.0
