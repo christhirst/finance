@@ -22,7 +22,7 @@ func TestGetHistData(t *testing.T) {
 		now := startTime
 		then := endTime
 		client := Init()
-		bar, err := GetHistData(client, stock, &now, &then, numBars)
+		bar, err := GetHistData(stock, &now, &then, numBars)
 		if err, ok := err.(net.Error); ok && err.Timeout() {
 			t.Error(err.Error())
 		}
@@ -30,7 +30,7 @@ func TestGetHistData(t *testing.T) {
 			t.Errorf("Getting Account faild: %s", os.Getenv("API_Key_ID"))
 		}
 		if bar == nil {
-			t.Error("No Data could be fetched", stock, now, then)
+			t.Error("No Data could be fetched", stock, now, then, err)
 		}
 		if len(bar) < 1 {
 			t.Errorf("Slice < 1")

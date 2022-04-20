@@ -3,11 +3,11 @@ package alpacaAcc
 import (
 	"fmt"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/christhirst/finance/pkg/indicator"
 )
 
-func GoldenCross(lbars []alpaca.Bar, shortAv int) int {
+func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 
 	if len(lbars) < shortAv {
 		fmt.Println("##Panic##")

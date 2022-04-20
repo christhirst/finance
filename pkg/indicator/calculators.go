@@ -2,19 +2,20 @@ package indicator
 
 import (
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 )
 
-func Avarage(bars []alpaca.Bar) float32 {
-	var sum float32
+func Avarage(bars []marketdata.Bar) float64 {
+	var sum float64
 	for _, c := range bars {
 		sum += c.Close
 	}
 
-	return (sum / float32(len(bars)))
+	return (sum / float64(len(bars)))
 
 }
 
-func min(bars []alpaca.Bar) float32 {
+func min(bars []marketdata.Bar) float64 {
 	lowest := bars[0].Close
 	for _, running := range bars {
 		if running.Close < lowest {

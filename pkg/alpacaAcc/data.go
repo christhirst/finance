@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata/stream"
 )
 
@@ -64,13 +64,21 @@ func GetLiveData(stock string) {
 
 }
 
-func GetHistData(c *alpaca.Client, stock string, startdt *time.Time, enddt *time.Time, numBars int) ([]alpaca.Bar, error) {
-	bar, err := c.GetSymbolBars(stock, alpaca.ListBarParams{Timeframe: "day", StartDt: startdt, EndDt: enddt, Limit: &numBars})
+func GetHistData(Client marketdata.Client, stock string, startdt *time.Time, enddt *time.Time, numBars int) (map[string][]marketdata.Bar, error) {
+	bar, err := Client.GetMultiBars([]string{stock}, marketdata.GetBarsParams{
+		Start:      time.Date(2021, 8, 9, 13, 30, 0, 0, time.UTC),
+		End:        time.Date(2021, 8, 9, 13, 30, 1, 0, time.UTC),
+		TotalLimit: numBars,
+	})
+	//GetSymbolBars(stock, alpaca.ListBarParams{Timeframe: "day", StartDt: startdt, EndDt: enddt, Limit: &numBars})
 	return bar, err
 }
 
-func Tradingdays(Client *alpaca.Client, days int) (int, error) {
+func Tradingdays(Client marketdata.Client, days int) (int, error) {
 	startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
-	bars, err := GetHistData(Client, "AAPL", &startTime, &endTime, days)
+	bars, err := Client.GetMultiBars([]string{"AAPL"}, marketdata.GetBarsParams{
+		Start: startTime,
+		End:   endTime,
+	})
 	return len(bars), err
 }

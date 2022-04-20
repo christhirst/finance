@@ -8,9 +8,9 @@ import (
 
 func TestInit(t *testing.T) {
 	client := Init()
-	_, err := client.GetAccount()
-	if err != nil {
-		t.Error(err.Error())
+
+	if client != nil {
+		t.Error(client)
 	} else if common.Credentials().ID == "" {
 		t.Errorf("Running w/ credentials [%v]\n", common.Credentials().ID)
 	} else if common.Credentials().Secret == "" {

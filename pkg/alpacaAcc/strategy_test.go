@@ -21,10 +21,10 @@ func TestGoldenCross(t *testing.T) {
 		if err != nil {
 			t.Error(err.Error())
 		}
-		longAv = len(bars) - daysback - 1
+		longAv = len(bars[symbol]) - daysback - 1
 		shortAv := rand.Intn(longAv - 1)
 		for i := 0; i <= daysback; i++ {
-			GoldenCross(bars[i:longAv+i], shortAv)
+			GoldenCross(bars[symbol][i:longAv+i], shortAv)
 		}
 	}
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func TestTrader(t *testing.T) {
-	client := Init()
+	client := Initc()
 	fmt.Println(client)
 
 	stratList := []string{"GoldenCross"}

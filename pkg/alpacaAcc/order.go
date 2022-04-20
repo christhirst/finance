@@ -1,7 +1,7 @@
 package alpacaAcc
 
 import (
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
 	"github.com/shopspring/decimal"
 )
 
@@ -10,7 +10,7 @@ func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, 
 	orderInformation := alpaca.PlaceOrderRequest{
 		AccountID:   account.ID,
 		AssetKey:    sym,
-		Qty:         quantity,
+		Qty:         &quantity,
 		Side:        adjSide,
 		TimeInForce: "gtc",
 		Type:        "market", // [L] Change to alpaca.Limit

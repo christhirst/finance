@@ -3,19 +3,25 @@ package mockaccount
 import (
 	"testing"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
 )
 
 func TestAddBuy(t *testing.T) {
-	max := 50
-	for i := 2; i <= max; i++ {
-		//AddBuy(s, fq, fp)
+	MockPortfolio := new(MockPortfolio)
+	//p := new(alpaca.Position)
+	s := "AAPL"
+	MockPortfolio.Pos = map[string]alpaca.Position{s: alpaca.Position{}}
+	max := 10
 
+	fq := float64(44)
+	fp := float64(55)
+	for i := 0; i <= max; i++ {
+		MockPortfolio.AddBuy(s, fq, fp)
 	}
-
 }
 
 func TestMockPortfolio(t *testing.T) {
 	MockPortfolio := new(MockPortfolio)
 	MockPortfolio.Pos = make(map[string]alpaca.Position)
+
 }

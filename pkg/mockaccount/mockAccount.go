@@ -1,9 +1,10 @@
 package mockaccount
 
 import (
+	"fmt"
 	"sync"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
 	"github.com/shopspring/decimal"
 )
 
@@ -14,10 +15,11 @@ type MockPortfolio struct {
 	Cash float32 `json:"cash"`
 }
 
-func (m *MockPortfolio) AddBuy(s string, fq float64, fp float32) {
+func (m *MockPortfolio) AddBuy(s string, fq float64, fp float64) {
 	newQty := decimal.NewFromFloat(fq)
-	newPrice := decimal.NewFromFloat(fq)
+	newPrice := decimal.NewFromFloat(fp)
 	m.Mu.Lock()
+	fmt.Println("rr")
 	if entry, ok := m.Pos[s]; ok {
 		// Then we modify the copy
 		if !newQty.Add(entry.Qty).Equals(decimal.NewFromFloat(0)) {
@@ -30,7 +32,7 @@ func (m *MockPortfolio) AddBuy(s string, fq float64, fp float32) {
 
 		m.Pos[s] = entry
 		m.Mu.Unlock()
-
+		fmt.Println("dd")
 	}
 
 }

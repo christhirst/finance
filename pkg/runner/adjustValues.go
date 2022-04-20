@@ -3,7 +3,7 @@ package runner
 import (
 	"sync"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/christhirst/finance/pkg/helper"
 	"github.com/christhirst/finance/pkg/mockaccount"
@@ -21,7 +21,7 @@ type confData struct {
 	gain    float64
 }
 
-func analyser(bars []alpaca.Bar, stock string, strat string, position chan confData, runs int, wg *sync.WaitGroup) {
+func analyser(bars []alpaca., stock string, strat string, position chan confData, runs int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	//+ one for minus one day
 	min := 10
