@@ -34,7 +34,7 @@ func AnalyticRunner(Client alpacaAcc.AlpacaClientContainer, stockList []string, 
 			bars, _ := alpacaAcc.GetHistData(Client.DataClient, stock, &startTime, &endTime, daysback)
 			for _, strat := range stratList {
 				go func(strat string) {
-					analyser(bars, stock, strat, position, runs, &wg)
+					analyser(bars[stock], stock, strat, position, runs, &wg)
 				}(strat)
 			}
 		}

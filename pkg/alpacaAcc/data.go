@@ -3,13 +3,14 @@ package alpacaAcc
 import (
 	"context"
 	"fmt"
-	"log"
+
 	"os"
 	"sync/atomic"
 	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata/stream"
+	"github.com/rs/zerolog/log"
 )
 
 type StockData struct {
@@ -58,7 +59,8 @@ func GetLiveData(stock string) {
 	}()
 
 	if err := c.Connect(ctx); err != nil {
-		log.Fatalf("could not establish connection, error: %s", err)
+		log.Error().Err(err).Msg("could not establish connection, error")
+
 	}
 	fmt.Println("established connection")
 
@@ -67,9 +69,12 @@ func GetLiveData(stock string) {
 func GetHistData(Client marketdata.Client, stock string, startdt *time.Time, enddt *time.Time, numBars int) (map[string][]marketdata.Bar, error) {
 	bar, err := Client.GetMultiBars([]string{stock}, marketdata.GetBarsParams{
 		Start:      time.Date(2021, 8, 9, 13, 30, 0, 0, time.UTC),
-		End:        time.Date(2021, 8, 9, 13, 30, 1, 0, time.UTC),
+		End:        time.Date(2022, 8, 9, 13, 30, 1, 0, time.UTC),
 		TotalLimit: numBars,
 	})
+	if err != nil {
+		log.Error().Err(err).Msg("Unable to fetch data")
+	}
 	//GetSymbolBars(stock, alpaca.ListBarParams{Timeframe: "day", StartDt: startdt, EndDt: enddt, Limit: &numBars})
 	return bar, err
 }

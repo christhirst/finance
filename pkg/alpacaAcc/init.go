@@ -48,7 +48,7 @@ func Initc() AlpacaClientContainer {
 
 	// You can set your API key/secret here or you can use environment variables!
 	apiKey := os.Getenv("API_KEY_ID")
-	apiSecret := os.Getenv("API_KEY_ID")
+	apiSecret := os.Getenv("SECRET_KEY")
 	// Change baseURL to https://paper-api.alpaca.markets if you want use paper!
 	baseURL := "https://paper-api.alpaca.markets"
 	// Change feed to sip if you have proper subscription

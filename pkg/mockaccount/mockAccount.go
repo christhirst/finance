@@ -12,7 +12,7 @@ type MockPortfolio struct {
 	Mu  sync.Mutex
 	Pos map[string]alpaca.Position
 	//Currency string          `json:"currency"`
-	Cash float32 `json:"cash"`
+	Cash float64 `json:"cash"`
 }
 
 func (m *MockPortfolio) AddBuy(s string, fq float64, fp float64) {
