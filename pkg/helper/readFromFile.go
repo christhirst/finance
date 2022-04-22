@@ -1,25 +1,28 @@
 package helper
 
 import (
-	"fmt"
-	"log"
+	"encoding/csv"
 	"os"
-	"path/filepath"
+
+	"github.com/rs/zerolog/log"
 )
 
-func companylist() ([]byte, error) {
-	path, err := os.Getwd()
+func readCsvFile(filePath string) [][]string {
+	f, err := os.Open(filePath)
 	if err != nil {
-		log.Println(err)
+		log.Error().Err(err).Msg("File does not exist")
 	}
-	fmt.Println(path)
-	fmt.Println("####")
-	dat, err := os.ReadFile(filepath.Join(path, "../../") + "/files/companies.csv")
+	defer f.Close()
+
+	csvReader := csv.NewReader(f)
+	csvReader.FieldsPerRecord = -1
+	records, err := csvReader.ReadAll()
+	if len(records) == 0 {
+
+	}
 	if err != nil {
-		fmt.Println(err)
+		log.Error().Err(err).Msg("Unable to read file")
 	}
-	fmt.Println(dat)
 
-	return dat, err
-
+	return records
 }

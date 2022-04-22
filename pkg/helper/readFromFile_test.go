@@ -1,11 +1,14 @@
 package helper
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
-func TestCompanylist(t *testing.T) {
 
-	_, err := companylist()
-	if err != nil {
-		t.Error(err)
-	}
+
+func TestReadCsvFile(t *testing.T) {
+	records := readCsvFile("../../files/companies.csv")
+	fmt.Println(records)
+
 }
