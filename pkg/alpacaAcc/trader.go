@@ -8,8 +8,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func Trader(Client alpaca.Client, stock string, strat string, longAv int, shortAv int, ErrorChan chan<- error) {
-	account, err := Client.GetAccount()
+func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv int, shortAv int, ErrorChan chan<- error) {
+	account, err := ClientCont.TradeClient.GetAccount()
 
 	if err != nil {
 		ErrorChan <- err
@@ -19,17 +19,17 @@ func Trader(Client alpaca.Client, stock string, strat string, longAv int, shortA
 
 	//+ one for minus one day
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-	daysback, err = Tradingdays(Client, daysback)
+	daysback, err = Tradingdays(ClientCont.DataClient, daysback)
 	ErrorChan <- err
-	shortAv, err = Tradingdays(shortAv)
+	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv)
 	ErrorChan <- err
-	barsd, err := GetHistData(stock, &startTime, &endTime, daysback+longAv)
+	barsd, err := GetHistData(ClientCont.DataClient, stock, &startTime, &endTime, daysback+longAv)
 	bars := barsd[stock]
 	if err != nil {
 		ErrorChan <- err
 	}
 
-	position, _ := Client.GetAsset(stock)
+	position, _ := ClientCont.TradeClient.GetAsset(stock)
 	fmt.Println(position)
 
 	if strat == "GoldenCross" {
@@ -38,10 +38,10 @@ func Trader(Client alpaca.Client, stock string, strat string, longAv int, shortA
 		longAv = len(bars) - daysback - 1
 		if GoldenCross(bars[longAv-1:], shortAv) == 1 {
 			adjSide = alpaca.Side("buy")
-			order(Client, adjSide, quantity, &stock, account, -1)
+			order(ClientCont.TradeClient, adjSide, quantity, &stock, account, -1)
 		} else if GoldenCross(bars[longAv-1:], shortAv) == -1 {
 			adjSide = alpaca.Side("sell")
-			order(Client, adjSide, quantity, &stock, account, -1)
+			order(ClientCont.TradeClient, adjSide, quantity, &stock, account, -1)
 		}
 	}
 

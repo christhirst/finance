@@ -18,3 +18,16 @@ func TestInit(t *testing.T) {
 
 	}
 }
+
+func TestInitc(t *testing.T) {
+	clientCont := Initc()
+
+	if clientCont.TradeClient != nil {
+		t.Error(clientCont)
+	} else if common.Credentials().ID == "" {
+		t.Errorf("Running w/ credentials [%v]\n", common.Credentials().ID)
+	} else if common.Credentials().Secret == "" {
+		t.Errorf("Running w/ credentials [%v]\n", common.Credentials().Secret)
+
+	}
+}

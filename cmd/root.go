@@ -47,10 +47,8 @@ func Execute() {
 
 func Init(stockList []string, stratList []string) {
 	//get data from database
-	clientObj := alpacaAcc.AlpacaClientContainer{
-		Client: alpacaAcc.Init(),
-	}
-	runner.Runner(clientObj.Client, stockList, stratList)
+	clientObj := alpacaAcc.Initc()
+	runner.Runner(clientObj, stockList, stratList)
 }
 
 // initConfig reads in config file and ENV variables if set.

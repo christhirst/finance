@@ -6,8 +6,8 @@ import (
 )
 
 func TestTrader(t *testing.T) {
-	client := Initc()
-	fmt.Println(client)
+	clientCont := Initc()
+	fmt.Println(clientCont)
 
 	stratList := []string{"GoldenCross"}
 	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
@@ -16,7 +16,7 @@ func TestTrader(t *testing.T) {
 	longAv := 30
 	shortAv := 10
 	for _, stock := range stockList {
-		Trader(client, stock, stratList[0], longAv, shortAv, errorChan)
+		Trader(clientCont, stock, stratList[0], longAv, shortAv, errorChan)
 	}
 	close(errorChan)
 	for err := range errorChan {

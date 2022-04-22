@@ -18,7 +18,7 @@ func TestMockBars(t *testing.T) {
 	for _, v := range tests {
 		got := MockBar(v.index, v.randLevel, strength)
 
-		if got.Close > float32(20)*float32(v.randLevel) || got.Close <= float32(10) {
+		if got.Close > float64(20)*float64(v.randLevel) || got.Close <= float64(10) {
 			t.Errorf("got %f want %f", got.Close, v.index)
 
 		}

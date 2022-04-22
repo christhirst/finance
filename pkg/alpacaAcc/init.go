@@ -10,10 +10,10 @@ import (
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata/stream"
 )
 
-type alpacaClientContainer struct {
-	tradeClient   alpaca.Client
-	dataClient    marketdata.Client
-	streamClient  stream.StocksClient
+type AlpacaClientContainer struct {
+	TradeClient   alpaca.Client
+	DataClient    marketdata.Client
+	StreamClient  stream.StocksClient
 	feed          string
 	movingAverage *movingaverage.MovingAverage
 	lastOrder     string
@@ -44,7 +44,7 @@ func Init() marketdata.Client {
 	Client := marketdata.NewClient(clientOp)
 	return Client
 }
-func Initc() alpacaClientContainer {
+func Initc() AlpacaClientContainer {
 
 	// You can set your API key/secret here or you can use environment variables!
 	apiKey := os.Getenv("API_KEY_ID")
@@ -54,17 +54,17 @@ func Initc() alpacaClientContainer {
 	// Change feed to sip if you have proper subscription
 	feed := "iex"
 
-	algo := alpacaClientContainer{
-		tradeClient: alpaca.NewClient(alpaca.ClientOpts{
+	algo := AlpacaClientContainer{
+		TradeClient: alpaca.NewClient(alpaca.ClientOpts{
 			ApiKey:    apiKey,
 			ApiSecret: apiSecret,
 			BaseURL:   baseURL,
 		}),
-		dataClient: marketdata.NewClient(marketdata.ClientOpts{
+		DataClient: marketdata.NewClient(marketdata.ClientOpts{
 			ApiKey:    apiKey,
 			ApiSecret: apiSecret,
 		}),
-		streamClient: stream.NewStocksClient(feed,
+		StreamClient: stream.NewStocksClient(feed,
 			stream.WithCredentials(apiKey, apiSecret),
 		),
 		feed: feed,
