@@ -69,7 +69,7 @@ func GetLiveData(stock string) {
 func GetHistData(Client marketdata.Client, stock string, startdt *time.Time, enddt *time.Time, numBars int) (map[string][]marketdata.Bar, error) {
 	bar, err := Client.GetMultiBars([]string{stock}, marketdata.GetBarsParams{
 		Start:      time.Date(2021, 8, 9, 13, 30, 0, 0, time.UTC),
-		End:        time.Date(2022, 8, 9, 13, 30, 1, 0, time.UTC),
+		End:        time.Date(2022, 3, 9, 13, 30, 1, 0, time.UTC),
 		TotalLimit: numBars,
 	})
 	if err != nil {

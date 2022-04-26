@@ -17,7 +17,7 @@ func TestGetLiveData(t *testing.T) {
 func TestGetHistData(t *testing.T) {
 	stocklist := []string{"AAPL"}
 	numBars := 10
-	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Now()
+	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(60*60*2), 0)
 	clientCon := Initc()
 	for _, stock := range stocklist {
 		now := startTime
