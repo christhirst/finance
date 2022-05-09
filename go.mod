@@ -1,6 +1,6 @@
 module github.com/christhirst/finance
 
-go 1.16
+go 1.18
 
 require (
 	github.com/RobinUS2/golang-moving-average v1.0.0
