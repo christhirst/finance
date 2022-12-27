@@ -1,12 +1,21 @@
 package alpacaAcc
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/rs/zerolog/log"
 )
 
 func allsignals() {
+
+	start := "2022-12-20"
+	end := "2022-12-27"
+	clientCon := Initc()
+
+	ee, err := clientCon.TradeClient.GetCalendar(&start, &end)
+	fmt.Println(err)
+	fmt.Println(ee)
 	ClientCont := Initc()
 	daysback := 200
 	longAv := 150
@@ -14,7 +23,7 @@ func allsignals() {
 	stock := "AAPL"
 
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-	daysback, err := Tradingdays(ClientCont.DataClient, daysback)
+	daysback, err = Tradingdays(ClientCont.DataClient, daysback)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
