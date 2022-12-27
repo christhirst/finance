@@ -16,7 +16,7 @@ func allsignals() {
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
 	daysback, err := Tradingdays(ClientCont.DataClient, daysback)
 	if err != nil {
-		log.Error().Err(err).Msg("")
+		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
 	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv)
 	if err != nil {
