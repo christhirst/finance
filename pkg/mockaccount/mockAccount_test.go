@@ -10,7 +10,7 @@ func TestAddBuy(t *testing.T) {
 	MockPortfolio := new(MockPortfolio)
 	//p := new(alpaca.Position)
 	s := "AAPL"
-	MockPortfolio.Pos = map[string]alpaca.Position{s: alpaca.Position{}}
+	MockPortfolio.Pos = map[string]alpaca.Position{s: {}}
 	max := 10
 
 	fq := float64(44)
