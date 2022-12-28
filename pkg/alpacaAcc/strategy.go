@@ -15,7 +15,7 @@ func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 		fmt.Println(shortAv)
 	}
 	longBarsOnDay := lbars[1:]
-	longBarsBeforeDaybefore := lbars[:len(lbars)]
+	longBarsBeforeDaybefore := lbars[:len(lbars)-1]
 
 	shortBarsOnDay := lbars[len(lbars)-shortAv:]
 	shortBarsBeforeDaybefore := lbars[len(lbars)-shortAv-1 : len(lbars)-1]
