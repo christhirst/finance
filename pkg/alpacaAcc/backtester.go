@@ -7,6 +7,39 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func alldaysofyear(year int) {
+	// Set the start date to January 1st of the current year
+	fmt.Println(year)
+	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
+
+	// Set the end date to December 31st of the current year
+	endDate := time.Date(year, time.December, 31, 0, 0, 0, 0, time.UTC)
+
+	// Iterate over each day in the range from startDate to endDate
+
+	for d := startDate; d.Before(endDate); d = d.AddDate(0, 0, 1) {
+		fmt.Println(d)
+	}
+	return
+
+}
+
+func getdatebefore(day string, beforeDays int) (t time.Time) {
+	t, err := time.Parse("2006-01-02", day)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Subtract 10 days from the date
+	newD := float64(beforeDays) * 1.1
+	newI := int(newD)
+	t = t.AddDate(0, 0, -newI)
+	fmt.Println(t)
+	return
+
+}
+
 func allsignals(stock string) {
 
 	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(60*60*2), 0)
@@ -16,15 +49,6 @@ func allsignals(stock string) {
 	t := time.Now()
 
 	// Format the date as "year-month-day"
-	end := t.Format("2006-01-02")
-
-	clientCon := Initc()
-
-	ee, err := clientCon.TradeClient.GetCalendar(&start, &end)
-	fmt.Println(err)
-	fmt.Println(len(ee))
-	barslength :=len(ee[len(ee)-longbar:])
-	fmt.Println(barslength)
 
 	barss, err := GetHistData(clientCon.DataClient, stock, &startTime, &endTime, numBars)
 	fmt.Println(len(barss))
@@ -34,6 +58,9 @@ func allsignals(stock string) {
 	longAv := 130
 	shortAv := 50
 
+
+
+	
 	daysback, err = Tradingdays(ClientCont.DataClient, daysback)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
