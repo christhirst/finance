@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/rs/zerolog/log"
 )
 
@@ -24,7 +25,7 @@ func alldaysofyear(year int) {
 
 }
 
-func getdatebefore(day string, beforeDays int) (t time.Time) {
+func getdatebefore(Client marketdata.Client, day string, beforeDays int) (t time.Time) {
 	t, err := time.Parse("2006-01-02", day)
 	if err != nil {
 		fmt.Println(err)
@@ -32,36 +33,37 @@ func getdatebefore(day string, beforeDays int) (t time.Time) {
 	}
 
 	// Subtract 10 days from the date
-	newD := float64(beforeDays) * 1.1
-	newI := int(newD)
+	newD := float64(beforeDays) * 1.5
+	newI := int(newD) + 5
 	t = t.AddDate(0, 0, -newI)
+	tt := t.Format("2006-01-02")
 	fmt.Println(t)
-	return
+	//startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
+
+	clientCon := Initc()
+
+	ee, err := clientCon.TradeClient.GetCalendar(&tt, &day)
+	fmt.Println(err)
+	fmt.Println(len(ee))
+	barslength := len(ee[len(ee)-beforeDays:])
+	fmt.Println(barslength)
+
+	return t
 
 }
 
 func allsignals(stock string) {
 
 	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(60*60*2), 0)
-	numBars := 10
-	longbar := 200
-	start := "2022-01-01"
-	t := time.Now()
 
 	// Format the date as "year-month-day"
-
-	barss, err := GetHistData(clientCon.DataClient, stock, &startTime, &endTime, numBars)
-	fmt.Println(len(barss))
 
 	ClientCont := Initc()
 	daysback := 200
 	longAv := 130
 	shortAv := 50
 
-
-
-	
-	daysback, err = Tradingdays(ClientCont.DataClient, daysback)
+	daysback, err := Tradingdays(ClientCont.DataClient, daysback)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}

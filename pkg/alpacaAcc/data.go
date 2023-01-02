@@ -90,8 +90,7 @@ func Tradingdays(Client marketdata.Client, days int) (int, error) {
 }
 
 func Tradingdayss(Client marketdata.Client, days int) (int, error) {
-	day := time.Now()
-	ii := getdatebefore()
+
 	startTime, endTime := time.Unix(time.Now().Unix()-int64(365*24*60*60), 0), time.Now()
 	bars, err := Client.GetMultiBars([]string{"AAPL"}, marketdata.GetBarsParams{
 		Start: startTime,
