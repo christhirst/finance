@@ -1,6 +1,7 @@
 package alpacaAcc
 
 import (
+	"log"
 	"os"
 
 	movingaverage "github.com/RobinUS2/golang-moving-average"
@@ -20,21 +21,22 @@ type AlpacaClientContainer struct {
 	stock         string
 }
 
-/* func tradeUpdateHandler(update alpaca.TradeUpdate) {
-	fmt.Println("trade update", update)
-}
+/*
+	 func tradeUpdateHandler(update alpaca.TradeUpdate) {
+		fmt.Println("trade update", update)
+	}
 
-func tradeHandler(trade stream.Trade) {
-	fmt.Println("trade", trade)
-}
+	func tradeHandler(trade stream.Trade) {
+		fmt.Println("trade", trade)
+	}
 
-func quoteHandler(quote stream.Quote) {
-	fmt.Println("quote", quote)
-}
+	func quoteHandler(quote stream.Quote) {
+		fmt.Println("quote", quote)
+	}
 
-func barHandler(bar stream.Bar) {
-	fmt.Println("bar", bar)
-}
+	func barHandler(bar stream.Bar) {
+		fmt.Println("bar", bar)
+	}
 */
 func Init() marketdata.Client {
 
@@ -49,6 +51,10 @@ func Initc() AlpacaClientContainer {
 	// You can set your API key/secret here or you can use environment variables!
 	apiKey := os.Getenv("API_KEY_ID")
 	apiSecret := os.Getenv("SECRET_KEY")
+	if apiKey == "" || apiSecret == "" {
+		log.Panic()
+	}
+
 	// Change baseURL to https://paper-api.alpaca.markets if you want use paper!
 	baseURL := "https://paper-api.alpaca.markets"
 	// Change feed to sip if you have proper subscription

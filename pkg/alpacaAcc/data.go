@@ -79,9 +79,8 @@ func GetHistData(Client marketdata.Client, stock string, startdt *time.Time, end
 	return bar, err
 }
 
-func Tradingdays(Client marketdata.Client, days int) (int, error) {
-
-	startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
+func Tradingdays(Client marketdata.Client, days int, min int) (int, error) {
+	startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now().Add(-15*time.Minute)
 	bars, err := Client.GetMultiBars([]string{"AAPL"}, marketdata.GetBarsParams{
 		Start: startTime,
 		End:   endTime,
@@ -89,16 +88,10 @@ func Tradingdays(Client marketdata.Client, days int) (int, error) {
 	return len(bars), err
 }
 
-func Tradingdayss(Client marketdata.Client, days int) (int, error) {
-
-	startTime, endTime := time.Unix(time.Now().Unix()-int64(365*24*60*60), 0), time.Now()
+func GetHistDatas(Client marketdata.Client, startTime, endTime time.Time) (int, error) {
 	bars, err := Client.GetMultiBars([]string{"AAPL"}, marketdata.GetBarsParams{
 		Start: startTime,
-
-		End: endTime,
+		End:   endTime,
 	})
-	newb := bars["APPL"][days:]
-	fmt.Println(newb)
-	fmt.Println(len(newb))
 	return len(bars), err
 }

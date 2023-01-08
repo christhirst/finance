@@ -1,6 +1,9 @@
 package alpacaAcc
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestAlldaysofyear(t *testing.T) {
 	alldaysofyear(2023)
@@ -9,13 +12,21 @@ func TestAlldaysofyear(t *testing.T) {
 
 func TestGetdatebefore(t *testing.T) {
 	clientCon := Initc()
+	getdatebefore(clientCon, "2023-01-02", 15)
 
-	getdatebefore(clientCon.DataClient, "2023-01-02", 15)
-	t.Error()
+	t.Run("Init connection", func(t *testing.T) {
+		got := "2023-01-02"
+		want := 15
+		daybefore, diff := getdatebefore(clientCon, got, want)
+		if diff != want {
+			fmt.Println(daybefore)
+			t.Error()
+		}
+	})
 }
 
 func TestAllsignals(t *testing.T) {
 	stock := "AAPL"
-	allsignals(stock)
+	allsignals(stock, 5*12)
 	t.Error()
 }

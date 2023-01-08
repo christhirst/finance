@@ -19,9 +19,9 @@ func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv
 
 	//+ one for minus one day
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-	daysback, err = Tradingdays(ClientCont.DataClient, daysback)
+	daysback, err = Tradingdays(ClientCont.DataClient, daysback, 15)
 	ErrorChan <- err
-	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv)
+	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
 	ErrorChan <- err
 	barsd, err := GetHistData(ClientCont.DataClient, stock, &startTime, &endTime, daysback+longAv)
 	bars := barsd[stock]
