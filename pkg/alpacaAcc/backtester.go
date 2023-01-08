@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/rs/zerolog/log"
 )
 
@@ -25,10 +24,11 @@ func alldaysofyear(year int) {
 
 }
 
-func getdatebefore(Client marketdata.Client, day string, beforeDays int) (t time.Time) {
+func getdatebefore(Client AlpacaClientContainer, day string, beforeDays int) (t time.Time, diff int) {
+	//only the format
 	t, err := time.Parse("2006-01-02", day)
 	if err != nil {
-		fmt.Println(err)
+		log.Error().Err(err).Msg("Parsing of day failed")
 		return
 	}
 
@@ -36,38 +36,40 @@ func getdatebefore(Client marketdata.Client, day string, beforeDays int) (t time
 	newD := float64(beforeDays) * 1.5
 	newI := int(newD) + 5
 	t = t.AddDate(0, 0, -newI)
+	//only the format
 	tt := t.Format("2006-01-02")
-	fmt.Println(t)
 	//startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
 
-	clientCon := Initc()
+	days, err := Client.TradeClient.GetCalendar(&tt, &day)
+	if err != nil {
+		log.Error().Err(err).Msg("Getting calenderdates failed")
+		return
+	}
+	diff = len(days[len(days)-beforeDays:])
 
-	ee, err := clientCon.TradeClient.GetCalendar(&tt, &day)
-	fmt.Println(err)
-	fmt.Println(len(ee))
-	barslength := len(ee[len(ee)-beforeDays:])
-	fmt.Println(barslength)
-
-	return t
+	return
 
 }
 
-func allsignals(stock string) {
-
-	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(60*60*2), 0)
-
+func allsignals(stock string, month int) {
+	now := time.Now()
+	startTime, endTime := now.AddDate(0, -month, 0), now.Add(-15*time.Minute)
+	//.Unix()-int64(60*60*25), 0)
+	fmt.Println(startTime)
+	fmt.Println(endTime)
 	// Format the date as "year-month-day"
 
 	ClientCont := Initc()
-	daysback := 200
+	daysback := 500
 	longAv := 130
 	shortAv := 50
+	minBack := 15
 
-	daysback, err := Tradingdays(ClientCont.DataClient, daysback)
+	daysback, err := Tradingdays(ClientCont.DataClient, daysback, minBack)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
-	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv)
+	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
 	if err != nil {
 		log.Error().Err(err).Msg("")
 	}
