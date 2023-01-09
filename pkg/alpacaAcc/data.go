@@ -68,9 +68,9 @@ func GetLiveData(stock string) {
 
 func GetHistData(Client marketdata.Client, stock string, startdt *time.Time, enddt *time.Time, numBars int) (map[string][]marketdata.Bar, error) {
 	bar, err := Client.GetMultiBars([]string{stock}, marketdata.GetBarsParams{
-		Start:      time.Date(2021, 8, 9, 13, 30, 0, 0, time.UTC),
-		End:        time.Date(2022, 3, 9, 13, 30, 1, 0, time.UTC),
-		TotalLimit: numBars,
+		Start: time.Date(2021, 8, 9, 13, 30, 0, 0, time.UTC),
+		End:   time.Date(2022, 3, 9, 13, 30, 1, 0, time.UTC),
+		//TotalLimit: numBars,
 	})
 	if err != nil {
 		log.Error().Err(err).Msg("Unable to fetch data")
@@ -88,10 +88,10 @@ func Tradingdays(Client marketdata.Client, days int, min int) (int, error) {
 	return len(bars), err
 }
 
-func GetHistDatas(Client marketdata.Client, startTime, endTime time.Time) (int, error) {
-	bars, err := Client.GetMultiBars([]string{"AAPL"}, marketdata.GetBarsParams{
+func GetHistDatas(Client marketdata.Client, stock string, startTime, endTime time.Time, numBars int) (map[string][]marketdata.Bar, error) {
+	bars, err := Client.GetMultiBars([]string{stock}, marketdata.GetBarsParams{
 		Start: startTime,
 		End:   endTime,
 	})
-	return len(bars), err
+	return bars, err
 }

@@ -69,15 +69,20 @@ func allsignals(stock string, month int) {
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
-	shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
+	/* shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
 	if err != nil {
 		log.Error().Err(err).Msg("")
-	}
-	barsd, err := GetHistData(ClientCont.DataClient, stock, &startTime, &endTime, daysback+longAv)
+	} */
+	barsd, err := GetHistDatas(ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")
 	}
 	bars := barsd[stock]
-	GoldenCross(bars[longAv-1:], shortAv)
-
+	fmt.Println(len(bars))
+	for i := 0; i <= len(bars)-longAv-1; i++ {
+		o := longAv + i
+		oo := o + longAv
+		ii := GoldenCross(bars[o-1:oo], shortAv)
+		fmt.Println(ii)
+	}
 }

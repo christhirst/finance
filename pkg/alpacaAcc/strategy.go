@@ -5,6 +5,7 @@ import (
 
 	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
 	"github.com/christhirst/finance/pkg/indicator"
+	"github.com/rs/zerolog/log"
 )
 
 func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
@@ -13,6 +14,7 @@ func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 		fmt.Println("##Panic##")
 		fmt.Println(len(lbars))
 		fmt.Println(shortAv)
+		log.Panic()
 	}
 	longBarsOnDay := lbars[1:]
 	longBarsBeforeDaybefore := lbars[:len(lbars)-1]
@@ -25,9 +27,11 @@ func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 
 	longAv := indicator.Avarage(longBarsOnDay)
 	longAvDaybefore := indicator.Avarage(longBarsBeforeDaybefore)
-
+	fmt.Println(shortAvf, longAv, len(longBarsOnDay))
 	if longAv <= shortAvf && longAvDaybefore >= shortAvDaybefore {
 		//fmt.Println(longAv, shortAv, longAvDaybefore, shortAvDaybefore)
+		fmt.Println(longAv, shortAvf)
+		fmt.Println(lbars[len(lbars)-1])
 		return 1
 	}
 	if longAv >= shortAvf && longAvDaybefore <= shortAvDaybefore {
