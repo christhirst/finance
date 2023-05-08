@@ -82,7 +82,14 @@ func allsignals(stock string, month int) {
 	for i := 0; i <= len(bars)-longAv-1; i++ {
 		o := longAv + i
 		oo := o + longAv
+		//fmt.Println(bars[o:oo][len(bars[o:oo])-1])
+		if bars[o:oo][len(bars[o:oo])-1].Close == 0 {
+			fmt.Println(bars[o:oo][len(bars[o:oo])-1].Close)
+			break
+		}
 		ii := GoldenCross(bars[o-1:oo], shortAv)
 		fmt.Println(ii)
 	}
 }
+
+//1128 1258

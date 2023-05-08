@@ -27,11 +27,11 @@ func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 
 	longAv := indicator.Avarage(longBarsOnDay)
 	longAvDaybefore := indicator.Avarage(longBarsBeforeDaybefore)
-	fmt.Println(shortAvf, longAv, len(longBarsOnDay))
+
 	if longAv <= shortAvf && longAvDaybefore >= shortAvDaybefore {
 		//fmt.Println(longAv, shortAv, longAvDaybefore, shortAvDaybefore)
-		fmt.Println(longAv, shortAvf)
-		fmt.Println(lbars[len(lbars)-1])
+		/* fmt.Println(longAv, shortAvf)
+		fmt.Println(lbars[len(lbars)-1]) */
 		return 1
 	}
 	if longAv >= shortAvf && longAvDaybefore <= shortAvDaybefore {
