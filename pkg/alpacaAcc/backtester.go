@@ -1,13 +1,6 @@
 package alpacaAcc
 
-import (
-	"fmt"
-	"time"
-
-	"github.com/rs/zerolog/log"
-)
-
-func alldaysofyear(year int) {
+/* func alldaysofyear(year int) {
 	// Set the start date to January 1st of the current year
 	fmt.Println(year)
 	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
@@ -37,17 +30,24 @@ func getdatebefore(Client AlpacaClientContainer, day string, beforeDays int) (t 
 	newI := int(newD) + 5
 	t = t.AddDate(0, 0, -newI)
 	//only the format
-	tt := t.Format("2006-01-02")
+	//tt := t.Format("2006-01-02")
 	//startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
 
-	days, err := Client.TradeClient.GetCalendar(&tt, &day)
+	ts := time.Time{}
+	ds := time.Time{}
+
+	req := &alpaca.GetCalendarRequest{
+		Start: ts,
+		End:   ds,
+	}
+	days, err := Client.TradeClient.GetCalendar(*req)
 	if err != nil {
 		log.Error().Err(err).Msg("Getting calenderdates failed")
 		return
 	}
-	diff = len(days[len(days)-beforeDays:])
+	diff = len(days)
 
-	return
+	return t, diff
 
 }
 
@@ -59,7 +59,7 @@ func allsignals(stock string, month int) {
 	fmt.Println(endTime)
 	// Format the date as "year-month-day"
 
-	ClientCont := Initc()
+	ClientCont := Init()
 	daysback := 500
 	longAv := 130
 	shortAv := 50
@@ -69,10 +69,10 @@ func allsignals(stock string, month int) {
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
-	/* shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
+	 shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
 	if err != nil {
 		log.Error().Err(err).Msg("")
-	} */
+	}
 	barsd, err := GetHistDatas(ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")
@@ -93,3 +93,4 @@ func allsignals(stock string, month int) {
 }
 
 //1128 1258
+*/

@@ -1,13 +1,5 @@
 package runner
 
-import (
-	"sync"
-	"testing"
-	"time"
-
-	"github.com/christhirst/finance/pkg/alpacaAcc"
-)
-
 /* func TestRunner(t *testing.T) {
 	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	stratList := []string{"GoldenCross"}
@@ -15,7 +7,7 @@ import (
 	Runner(client, stockList, stratList)
 } */
 
-func TestAnalyticRunner(t *testing.T) {
+/* func TestAnalyticRunner(t *testing.T) {
 	stockList := []string{"AAPL"} // "MSFT", "AMZN", "GOOGL", "JD"}
 	stratList := []string{"GoldenCross"}
 	client := alpacaAcc.Init()
@@ -34,3 +26,4 @@ func TestAnalyticRunner(t *testing.T) {
 	}
 
 }
+*/

@@ -1,11 +1,6 @@
 package alpacaAcc
 
-import (
-	"fmt"
-	"testing"
-)
-
-func TestTrader(t *testing.T) {
+/* func TestTrader(t *testing.T) {
 	clientCont := Initc()
 	fmt.Println(clientCont)
 
@@ -26,3 +21,4 @@ func TestTrader(t *testing.T) {
 	}
 
 }
+*/

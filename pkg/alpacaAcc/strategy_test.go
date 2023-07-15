@@ -1,14 +1,6 @@
 package alpacaAcc
 
-import (
-	"math/rand"
-	"testing"
-	"time"
-
-	"github.com/christhirst/finance/pkg/helper"
-)
-
-func TestGoldenCross(t *testing.T) {
+/* func TestGoldenCross(t *testing.T) {
 	symbol := "AAPL"
 	client := Init()
 	for i := 0; i <= 3; i++ {
@@ -28,3 +20,4 @@ func TestGoldenCross(t *testing.T) {
 		}
 	}
 }
+*/

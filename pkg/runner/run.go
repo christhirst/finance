@@ -2,16 +2,13 @@ package runner
 
 import (
 	"fmt"
-	"sync"
-	"time"
-
-	"github.com/christhirst/finance/pkg/alpacaAcc"
 )
 
 func doSomething(s string) {
 	fmt.Println("doing something", s)
 }
 
+/*
 func Runner(Client alpacaAcc.AlpacaClientContainer, stockList []string, strats []string) {
 	errorChan := make(chan error)
 	for {
@@ -39,4 +36,4 @@ func AnalyticRunner(Client alpacaAcc.AlpacaClientContainer, stockList []string, 
 			}
 		}
 	}
-}
+} */

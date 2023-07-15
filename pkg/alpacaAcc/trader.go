@@ -1,13 +1,6 @@
 package alpacaAcc
 
-import (
-	"fmt"
-	"time"
-
-	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
-	"github.com/shopspring/decimal"
-)
-
+/*
 func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv int, shortAv int, ErrorChan chan<- error) {
 	account, err := ClientCont.TradeClient.GetAccount()
 
@@ -50,5 +43,6 @@ func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv
 			fmt.Println("ddd")
 
 		}
-	} */
+	}
 }
+*/

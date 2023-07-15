@@ -17,7 +17,6 @@ package cmd
 
 import (
 	"github.com/christhirst/finance/pkg/alpacaAcc"
-	"github.com/christhirst/finance/pkg/runner"
 )
 
 var cfgFile string
@@ -31,11 +30,11 @@ func Execute() {
 
 }
 
-func Init(stockList []string, stratList []string) {
+/* func Init(stockList []string, stratList []string) {
 	//get data from database
 	clientObj := alpacaAcc.Initc()
 	runner.Runner(clientObj, stockList, stratList)
-}
+} */
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
