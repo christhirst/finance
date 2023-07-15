@@ -3,7 +3,7 @@ package alpacaAcc
 import (
 	"fmt"
 
-	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 	"github.com/christhirst/finance/pkg/indicator"
 	"github.com/rs/zerolog/log"
 )

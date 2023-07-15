@@ -3,8 +3,8 @@ package runner
 import (
 	"sync"
 
-	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
-	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 	"github.com/christhirst/finance/pkg/alpacaAcc"
 	"github.com/christhirst/finance/pkg/helper"
 	"github.com/christhirst/finance/pkg/mockaccount"

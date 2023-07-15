@@ -2,7 +2,7 @@ package indicator
 
 import (
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
-	"github.com/alpacahq/alpaca-trade-api-go/v2/marketdata"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 )
 
 func Avarage(bars []marketdata.Bar) float64 {

@@ -1,13 +1,14 @@
 package patternreconition
 
-import "github.com/alpacahq/alpaca-trade-api-go/alpaca"
+import (
+	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
+)
 
-func bearish_candlestick(bar alpaca.Bar) bool {
-
+func bearish_candlestick(bar marketdata.Bar) bool {
 	return (bar.Close < bar.Open)
 }
 
-func BullishEngulfingCandle(bars []alpaca.Bar, index int) bool {
+func BullishEngulfingCandle(bars []marketdata.Bar, index int) bool {
 	curent_day := bars[index]
 	previous_day := bars[index-1]
 

@@ -3,7 +3,7 @@ package mockaccount
 import (
 	"testing"
 
-	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 )
 
 func TestAddBuy(t *testing.T) {

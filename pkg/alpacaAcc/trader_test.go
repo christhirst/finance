@@ -1,8 +1,13 @@
 package alpacaAcc
 
-/* func TestTrader(t *testing.T) {
-	clientCont := Initc()
-	fmt.Println(clientCont)
+import (
+	"fmt"
+	"testing"
+)
+
+func TestTrader(t *testing.T) {
+	client := Init()
+	fmt.Println(client)
 
 	stratList := []string{"GoldenCross"}
 	stockList := []string{"AAPL", "MSFT", "AMZN", "GOOGL", "JD"}
@@ -11,7 +16,7 @@ package alpacaAcc
 	longAv := 30
 	shortAv := 10
 	for _, stock := range stockList {
-		Trader(clientCont, stock, stratList[0], longAv, shortAv, errorChan)
+		Trader(client, stock, stratList[0], longAv, shortAv, errorChan)
 	}
 	close(errorChan)
 	for err := range errorChan {
@@ -21,4 +26,3 @@ package alpacaAcc
 	}
 
 }
-*/

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/alpacahq/alpaca-trade-api-go/v2/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/shopspring/decimal"
 )
 
@@ -23,7 +23,7 @@ func (m *MockPortfolio) AddBuy(s string, fq float64, fp float64) {
 	if entry, ok := m.Pos[s]; ok {
 		// Then we modify the copy
 		if !newQty.Add(entry.Qty).Equals(decimal.NewFromFloat(0)) {
-			entry.EntryPrice = entry.EntryPrice.Mul(entry.Qty).Add(newQty.Mul(newPrice).Div(newQty.Add(entry.Qty)))
+			entry.AvgEntryPrice = entry.AvgEntryPrice.Mul(entry.Qty).Add(newQty.Mul(newPrice).Div(newQty.Add(entry.Qty)))
 			entry.Qty = entry.Qty.Add(newQty)
 		} else {
 			entry.Qty = entry.Qty.Add(decimal.NewFromFloat(0))

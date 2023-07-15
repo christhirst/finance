@@ -1,6 +1,11 @@
 package alpacaAcc
 
-/* func TestAlldaysofyear(t *testing.T) {
+import (
+	"fmt"
+	"testing"
+)
+
+func TestAlldaysofyear(t *testing.T) {
 	alldaysofyear(2023)
 	t.Error()
 }
@@ -24,4 +29,4 @@ func TestAllsignals(t *testing.T) {
 	stock := "AAPL"
 	allsignals(stock, 5*12)
 	t.Error()
-} */
+}

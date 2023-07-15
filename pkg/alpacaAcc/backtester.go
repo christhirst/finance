@@ -1,6 +1,14 @@
 package alpacaAcc
 
-/* func alldaysofyear(year int) {
+import (
+	"fmt"
+	"time"
+
+	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
+	"github.com/rs/zerolog/log"
+)
+
+func alldaysofyear(year int) {
 	// Set the start date to January 1st of the current year
 	fmt.Println(year)
 	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
@@ -65,15 +73,15 @@ func allsignals(stock string, month int) {
 	shortAv := 50
 	minBack := 15
 
-	daysback, err := Tradingdays(ClientCont.DataClient, daysback, minBack)
+	daysback, err := Tradingdays(*ClientCont.DataClient, daysback, minBack)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
-	 shortAv, err = Tradingdays(ClientCont.DataClient, shortAv, 15)
+	shortAv, err = Tradingdays(*ClientCont.DataClient, shortAv, 15)
 	if err != nil {
 		log.Error().Err(err).Msg("")
 	}
-	barsd, err := GetHistDatas(ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
+	barsd, err := GetHistDatas(*ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")
 	}
@@ -93,4 +101,3 @@ func allsignals(stock string, month int) {
 }
 
 //1128 1258
-*/
