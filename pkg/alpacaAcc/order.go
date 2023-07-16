@@ -5,6 +5,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+func (b *bucket) Order(sym string, qty int, equity float64) {
+	b.qty = b.qty + qty
+	b.equityAmt = b.equityAmt + equity
+}
+
 func order(client alpaca.Client, adjSide alpaca.Side, quantity decimal.Decimal, sym string, account *alpaca.Account, mockPosition float64) (*alpaca.Position, error) {
 
 	orderInformation := alpaca.PlaceOrderRequest{

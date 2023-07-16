@@ -1,11 +1,12 @@
 package alpacaAcc
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata/stream"
+	"github.com/rs/zerolog/log"
 )
 
 type bucket struct {
@@ -24,10 +25,10 @@ type AlpacaClientContainer struct {
 	TradeClient  TradeClient
 	DataClient   *marketdata.Client
 	StreamClient *stream.StocksClient
-	long         []bucket
-	short        []bucket
-	allStocks    []stockField
-	blacklist    []string
+	long         map[string]*bucket
+	short        map[string]*bucket
+	allStocks    *[]stockField
+	blacklist    *[]string
 	feed         string
 	//movingAverage *movingaverage.MovingAverage
 	//lastOrder     string
@@ -70,7 +71,34 @@ func Init() AlpacaClientContainer {
 			stream.WithCredentials(apiKey, apiSecret),
 		),
 		feed: feed,
+		long: make(map[string]*bucket),
 	}
+	algo.initStocks("AAPL")
 
 	return algo
+}
+
+func (acc AlpacaClientContainer) initStocks(sym string) {
+	acc.long[sym] = &bucket{symbol: sym, qty: 0, adjustedQty: 0, equityAmt: 0}
+}
+
+func (acc AlpacaClientContainer) valuePositions(sym string, price float64) map[string]float64 {
+	//req := marketdata.GetLatestQuoteRequest{Feed: acc.feed, Currency: "USD"}
+
+	positions := map[string]float64{}
+	for i, v := range acc.long {
+		//lq, err := acc.DataClient.GetLatestQuote("AAPL", req)
+		//fmt.Println(err)
+		//fmt.Println(lq)
+		/* fmt.Println(v.symbol)
+		if err != nil {
+			log.Error().Err(err).Msg("")
+		} */
+		fmt.Println(float64(v.qty) * v.equityAmt)
+		fmt.Println(float64(v.qty) * price)
+
+		positions[i] = float64(v.qty)*v.equityAmt - float64(v.qty)*price
+	}
+
+	return positions
 }

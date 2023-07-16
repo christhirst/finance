@@ -70,8 +70,6 @@ func getdatebefore(Client AlpacaClientContainer, endday string, beforeDays int) 
 func allsignals(stock string, month int) {
 	now := time.Now()
 	startTime, endTime := now.AddDate(0, -month, 0), now.Add(-15*time.Minute)
-	fmt.Println(startTime)
-	fmt.Println(endTime)
 	// Format the date as "year-month-day"
 
 	ClientCont := Init()
@@ -79,16 +77,6 @@ func allsignals(stock string, month int) {
 	longAv := 130
 	shortAv := 50
 
-	/* daysback, err := Tradingdays(*ClientCont.DataClient, daysback, minBack)
-	if err != nil {
-		log.Error().Err(err).Int("daysback", daysback).Msg("")
-	}
-	shortAv, err = Tradingdays(*ClientCont.DataClient, shortAv, 15)
-	if err != nil {
-		log.Error().Err(err).Msg("")
-	}
-	*/
-	fmt.Println(startTime, endTime)
 	startTime, _, err := getdatebefore(ClientCont, endTime.Format("2006-01-02"), daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")
@@ -98,18 +86,28 @@ func allsignals(stock string, month int) {
 		log.Error().Err(err).Msg("")
 	}
 	bars := barsd[stock]
-	fmt.Println(len(bars))
+	qty := 1
+
 	for i := 0; i <= len(bars)-longAv-1; i++ {
 		o := longAv + i
 		oo := o + longAv
-		//fmt.Println(bars[o:oo][len(bars[o:oo])-1])
 		if bars[o:oo][len(bars[o:oo])-1].Close == 0 {
 			fmt.Println(bars[o:oo][len(bars[o:oo])-1].Close)
 			break
 		}
-		ii := GoldenCross(bars[o-1:oo], shortAv)
-		fmt.Println(ii)
+		checkedDay := bars[oo-1 : oo][0]
+		//fmt.Println(checkedDay)
+		signal := GoldenCross(bars[o-1:oo], shortAv)
+		if signal == 1 {
+			equityAmt := float64(qty) * checkedDay.Close
+			ClientCont.long[stock].Order(stock, qty, equityAmt)
+		}
+
 	}
+
+	fmt.Println(ClientCont.long[stock].equityAmt)
+	ii := ClientCont.valuePositions(stock, bars[len(bars)-1].Close)
+	fmt.Println(ii)
 }
 
 //1128 1258
