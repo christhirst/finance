@@ -19,7 +19,7 @@ func TestGetHistData(t *testing.T) {
 	end := time.Date(2022, 3, 9, 13, 30, 1, 0, time.UTC) */
 	stocklist := []string{"AAPL"}
 	numBars := 10
-	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(60*60*2), 0)
+	startTime, endTime := time.Unix(time.Now().Unix()-int64(50*24*60*60), 0), time.Unix(time.Now().Unix()-int64(30*60*1), 0)
 	clientCon := Init()
 	for _, stock := range stocklist {
 		now := startTime

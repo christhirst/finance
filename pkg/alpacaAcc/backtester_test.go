@@ -1,26 +1,25 @@
 package alpacaAcc
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestAlldaysofyear(t *testing.T) {
-	alldaysofyear(2023)
+/* func TestAlldaysofyear(t *testing.T) {
+	years, diff := alldaysofyear(2023)
+	fmt.Println(years)
+	fmt.Println(diff)
 	t.Error()
-}
+} */
 
 func TestGetdatebefore(t *testing.T) {
 	clientCon := Init()
-	getdatebefore(clientCon, "2023-01-02", 15)
 
 	t.Run("Init connection", func(t *testing.T) {
-		got := "2023-01-02"
-		want := 15
-		daybefore, diff := getdatebefore(clientCon, got, want)
+		got := "2023-03-07"
+		want := 10
+		daybefore, diff, err := getdatebefore(clientCon, got, want)
 		if diff != want {
-			fmt.Println(daybefore)
-			t.Error()
+			t.Error(diff, daybefore, err)
 		}
 	})
 }

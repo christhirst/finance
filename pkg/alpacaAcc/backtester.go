@@ -8,61 +8,68 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func alldaysofyear(year int) {
-	// Set the start date to January 1st of the current year
-	fmt.Println(year)
-	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
+/*
+	 func alldaysofyears(year int) (time.Time, time.Time) {
+		// Set the start date to January 1st of the current year
+		startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
 
-	// Set the end date to December 31st of the current year
-	endDate := time.Date(year, time.December, 31, 0, 0, 0, 0, time.UTC)
+		// Set the end date to December 31st of the current year
+		endDate := time.Date(year, time.December, 31, 0, 0, 0, 0, time.UTC)
 
-	// Iterate over each day in the range from startDate to endDate
+		// Iterate over each day in the range from startDate to endDate
 
-	for d := startDate; d.Before(endDate); d = d.AddDate(0, 0, 1) {
-		fmt.Println(d)
+		for d := startDate; d.Before(endDate); d = d.AddDate(0, 0, 1) {
+			fmt.Println(d)
+		}
+		return startDate, endDate
 	}
-	return
-
-}
-
-func getdatebefore(Client AlpacaClientContainer, day string, beforeDays int) (t time.Time, diff int) {
+*/
+func getdatebefore(Client AlpacaClientContainer, endday string, beforeDays int) (time.Time, int, error) {
 	//only the format
-	t, err := time.Parse("2006-01-02", day)
+	endDay, err := time.Parse("2006-01-02", endday)
 	if err != nil {
 		log.Error().Err(err).Msg("Parsing of day failed")
-		return
+		return time.Time{}, 0, err
 	}
-
-	// Subtract 10 days from the date
 	newD := float64(beforeDays) * 1.5
 	newI := int(newD) + 5
-	t = t.AddDate(0, 0, -newI)
-	//only the format
-	//tt := t.Format("2006-01-02")
-	//startTime, endTime := time.Unix(time.Now().Unix()-int64(days*24*60*60), 0), time.Now()
-
-	ts := time.Time{}
-	ds := time.Time{}
+	startDay := endDay.AddDate(0, 0, -newI-beforeDays)
 
 	req := &alpaca.GetCalendarRequest{
-		Start: ts,
-		End:   ds,
+		Start: startDay,
+		End:   endDay,
 	}
-	days, err := Client.TradeClient.GetCalendar(*req)
+	tradingDays, err := Client.TradeClient.GetCalendar(*req)
 	if err != nil {
 		log.Error().Err(err).Msg("Getting calenderdates failed")
-		return
+		return time.Time{}, 0, err
 	}
-	diff = len(days)
+	delta := len(tradingDays) - beforeDays
+	ll := tradingDays[delta-1].Date
+	dDay, err := time.Parse("2006-01-02", ll)
+	if err != nil {
+		log.Error().Err(err).Msg("Parsing of day failed")
+		return time.Time{}, 0, err
+	}
+	diff := len(tradingDays[delta:])
+	if diff != beforeDays {
+		log.Fatal()
+	}
 
-	return t, diff
+	end, err := time.Parse("2006-01-02", endday)
+	if err != nil {
+		// Handle the error
+	}
+
+	days := int(end.Sub(dDay).Hours() / 24)
+
+	return dDay, days, nil
 
 }
 
 func allsignals(stock string, month int) {
 	now := time.Now()
 	startTime, endTime := now.AddDate(0, -month, 0), now.Add(-15*time.Minute)
-	//.Unix()-int64(60*60*25), 0)
 	fmt.Println(startTime)
 	fmt.Println(endTime)
 	// Format the date as "year-month-day"
@@ -71,9 +78,8 @@ func allsignals(stock string, month int) {
 	daysback := 500
 	longAv := 130
 	shortAv := 50
-	minBack := 15
 
-	daysback, err := Tradingdays(*ClientCont.DataClient, daysback, minBack)
+	/* daysback, err := Tradingdays(*ClientCont.DataClient, daysback, minBack)
 	if err != nil {
 		log.Error().Err(err).Int("daysback", daysback).Msg("")
 	}
@@ -81,6 +87,10 @@ func allsignals(stock string, month int) {
 	if err != nil {
 		log.Error().Err(err).Msg("")
 	}
+	*/
+	fmt.Println(startTime, endTime)
+	startTime, _, err := getdatebefore(ClientCont, endTime.Format("2006-01-02"), daysback+longAv)
+
 	barsd, err := GetHistDatas(*ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")
