@@ -58,7 +58,7 @@ func getdatebefore(Client AlpacaClientContainer, endday string, beforeDays int) 
 
 	end, err := time.Parse("2006-01-02", endday)
 	if err != nil {
-		// Handle the error
+		log.Error().Err(err).Msg("")
 	}
 
 	days := int(end.Sub(dDay).Hours() / 24)
@@ -90,7 +90,9 @@ func allsignals(stock string, month int) {
 	*/
 	fmt.Println(startTime, endTime)
 	startTime, _, err := getdatebefore(ClientCont, endTime.Format("2006-01-02"), daysback+longAv)
-
+	if err != nil {
+		log.Error().Err(err).Msg("")
+	}
 	barsd, err := GetHistDatas(*ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	if err != nil {
 		log.Error().Err(err).Msg("")

@@ -7,7 +7,8 @@ import (
 )
 
 func TestAddBuy(t *testing.T) {
-	MockPortfolio := new(MockPortfolio)
+	MockPortfolio := MockPortfolio{Cash: 1000}
+
 	//p := new(alpaca.Position)
 	s := "AAPL"
 	MockPortfolio.Pos = map[string]alpaca.Position{s: {}}
@@ -21,7 +22,7 @@ func TestAddBuy(t *testing.T) {
 }
 
 func TestMockPortfolio(t *testing.T) {
-	MockPortfolio := new(MockPortfolio)
+	MockPortfolio := MockPortfolio{Cash: 1000}
 	MockPortfolio.Pos = make(map[string]alpaca.Position)
 
 }

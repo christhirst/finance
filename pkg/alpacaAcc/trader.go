@@ -20,9 +20,9 @@ func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv
 
 	//+ one for minus one day
 	startTime, endTime := time.Unix(time.Now().Unix()-int64((longAv+daysback+1)*24*60*60), 0), time.Now()
-	daysback, err = Tradingdays(*ClientCont.DataClient, daysback, 15)
+	//daysback, err = Tradingdays(*ClientCont.DataClient, daysback, 15)
 	ErrorChan <- err
-	shortAv, err = Tradingdays(*ClientCont.DataClient, shortAv, 15)
+	//shortAv, err = Tradingdays(*ClientCont.DataClient, shortAv, 15)
 	ErrorChan <- err
 	barsd, err := GetHistData(*ClientCont.DataClient, stock, startTime, endTime, daysback+longAv)
 	bars := barsd[stock]
@@ -39,10 +39,10 @@ func Trader(ClientCont AlpacaClientContainer, stock string, strat string, longAv
 		longAv = len(bars) - daysback - 1
 		if GoldenCross(bars[longAv-1:], shortAv) == 1 {
 			adjSide = alpaca.Side("buy")
-			order(*ClientCont.TradeClient, adjSide, quantity, stock, account, -1)
+			order(*ClientCont.TradeClient.(*alpaca.Client), adjSide, quantity, stock, account, -1)
 		} else if GoldenCross(bars[longAv-1:], shortAv) == -1 {
 			adjSide = alpaca.Side("sell")
-			order(*ClientCont.TradeClient, adjSide, quantity, stock, account, -1)
+			order(*ClientCont.TradeClient.(*alpaca.Client), adjSide, quantity, stock, account, -1)
 		}
 	}
 

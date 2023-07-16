@@ -9,7 +9,7 @@ import (
 )
 
 type bucket struct {
-	list        []string
+	symbol      string
 	qty         int
 	adjustedQty int
 	equityAmt   float64
@@ -21,11 +21,11 @@ type stockField struct {
 }
 
 type AlpacaClientContainer struct {
-	TradeClient  *alpaca.Client
+	TradeClient  TradeClient
 	DataClient   *marketdata.Client
 	StreamClient *stream.StocksClient
-	long         bucket
-	short        bucket
+	long         []bucket
+	short        []bucket
 	allStocks    []stockField
 	blacklist    []string
 	feed         string
@@ -34,7 +34,16 @@ type AlpacaClientContainer struct {
 	//stock         string
 }
 
+type TradeClient interface {
+	PlaceOrder(req alpaca.PlaceOrderRequest) (*alpaca.Order, error)
+	GetAccount() (*alpaca.Account, error)
+	GetAsset(symbol string) (*alpaca.Asset, error)
+	GetCalendar(req alpaca.GetCalendarRequest) ([]alpaca.CalendarDay, error)
+}
+
 func Init() AlpacaClientContainer {
+	//aa := alpaca.Client{}
+	//aa.GetCalendar()
 	// You can set your API key/secret here or you can use environment variables!
 	apiKey := "PK7358TZCGIMNCEJNQQS"                        //os.Getenv("API_KEY_ID")
 	apiSecret := "mS3QY46BcAHyKQWWoubSoSCpoeMY3zWEjWCj0p2K" //os.Getenv("SECRET_KEY")
