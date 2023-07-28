@@ -105,8 +105,11 @@ func getData() {
 	url := data[0]
 
 	for _, v := range data[1:] {
+		splitted := strings.Split(v, ",")
+		out := splitted[0]
+		in := splitted[1]
 		IDPPartner := new(IDPPartner)
-		reader := getDataFromURL(url, username, password)
+		reader := getDataFromURL(url+"/"+out, username, password)
 
 		// Decode the JSON response data into a MyData struct
 		var dataParsed Idp
@@ -114,9 +117,9 @@ func getData() {
 			panic(err)
 		}
 		IDPPartner.MetadataB64 = cleanMetadata(dataParsed.MetadataB64)
-		IDPPartner.PartnerName = v
+		IDPPartner.PartnerName = in
 
-		saveToFile(v, IDPPartner)
+		saveToFile(in, IDPPartner)
 
 	}
 }
