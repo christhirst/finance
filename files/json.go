@@ -105,6 +105,8 @@ func getData() {
 	url := data[0]
 
 	for _, v := range data[1:] {
+		fmt.Println("v")
+		fmt.Println(v)
 		splitted := strings.Split(v, ",")
 		out := splitted[0]
 		in := splitted[1]
