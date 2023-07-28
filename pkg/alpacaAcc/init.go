@@ -7,13 +7,35 @@ import (
 	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata/stream"
 	"github.com/rs/zerolog/log"
+	"github.com/shopspring/decimal"
 )
+
+type Position struct {
+	AssetID       string          `json:"asset_id"`
+	Symbol        string          `json:"symbol"`
+	Exchange      string          `json:"exchange"`
+	Qty           decimal.Decimal `json:"qty"`
+	QtyAvailable  decimal.Decimal `json:"qty_available"`
+	AvgEntryPrice decimal.Decimal `json:"avg_entry_price"`
+}
+
+type signalConfig struct {
+	Symbol          string
+	ShortAv         int
+	LongAv          int
+	Daysback        int
+	DerivationShort int
+	DerivationLong  int
+	TradeCount      int
+	Gain            float64
+}
 
 type bucket struct {
 	symbol      string
 	qty         int
 	adjustedQty int
 	equityAmt   float64
+	signalConf  signalConfig
 }
 
 type stockField struct {
@@ -74,7 +96,6 @@ func Init() AlpacaClientContainer {
 		long: make(map[string]*bucket),
 	}
 	algo.initStocks("AAPL")
-
 	return algo
 }
 

@@ -6,6 +6,7 @@ import (
 )
 
 func (b *bucket) Order(sym string, qty int, equity float64) {
+	b.signalConf.TradeCount++
 	b.qty = b.qty + qty
 	b.equityAmt = b.equityAmt + equity
 }

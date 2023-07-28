@@ -1,6 +1,7 @@
 package alpacaAcc
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -36,4 +37,26 @@ func TestGoldenCross(t *testing.T) {
 			GoldenCross(bars[symbol][i:longAv+i], shortAv)
 		}
 	}
+}
+
+func TestDerivation(t *testing.T) {
+	symbol := "AAPL"
+	clientCon := Init()
+	//now := time.Now()
+	//endTime := now.Add(-15 * time.Minute)
+	endDays, err := time.Parse("2006-01-02", "2023-02-03")
+	//min := 10
+	daysback := 0
+	longAv := 22
+	startDay, deltaD, err := getdatebefore(clientCon, "2023-02-03", longAv+daysback)
+	fmt.Println(startDay)
+	fmt.Println(deltaD)
+	bars, err := GetHistData(*clientCon.DataClient, symbol, startDay, endDays, deltaD)
+	fmt.Println(endDays)
+	fmt.Println("endDays")
+	if err != nil {
+		t.Error(err.Error())
+	}
+	ww := Derivation(bars[symbol], 10, 11)
+	t.Error(ww)
 }

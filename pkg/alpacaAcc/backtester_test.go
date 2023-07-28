@@ -16,13 +16,14 @@ func TestGetdatebefore(t *testing.T) {
 
 	t.Run("Init connection", func(t *testing.T) {
 		got := "2023-03-07"
-		days := 10
-		want := 14
+		days := 100
+		want := 147
 		daybefore, diff, err := getdatebefore(clientCon, got, days)
 		if diff != want {
 			t.Error(diff, daybefore, err)
 		}
 	})
+	//t.Error()
 }
 
 func TestAllsignals(t *testing.T) {

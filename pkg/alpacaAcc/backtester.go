@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/v3/marketdata"
 	"github.com/rs/zerolog/log"
 )
 
@@ -73,9 +74,22 @@ func allsignals(stock string, month int) {
 	// Format the date as "year-month-day"
 
 	ClientCont := Init()
+	s := "AAPL"
 	daysback := 500
-	longAv := 130
-	shortAv := 50
+	longAv := 50
+	shortAv := 20
+	sg := signalConfig{
+		Symbol:     s,
+		Daysback:   daysback,
+		LongAv:     longAv,
+		ShortAv:    shortAv,
+		TradeCount: 0,
+		Gain:       0,
+	}
+	ClientCont.long[s].signalConf = sg
+	/* ClientCont.long[s].signalConf.longAv = longAv
+	ClientCont.long[s].signalConf.shortAv = shortAv
+	ClientCont.long[s].signalConf.daysback = daysback */
 
 	startTime, _, err := getdatebefore(ClientCont, endTime.Format("2006-01-02"), daysback+longAv)
 	if err != nil {
@@ -92,22 +106,38 @@ func allsignals(stock string, month int) {
 		o := longAv + i
 		oo := o + longAv
 		if bars[o:oo][len(bars[o:oo])-1].Close == 0 {
-			fmt.Println(bars[o:oo][len(bars[o:oo])-1].Close)
+			fmt.Println("zero")
+			fmt.Println(bars[o:oo][len(bars[o:oo])-1])
 			break
 		}
-		checkedDay := bars[oo-1 : oo][0]
-		//fmt.Println(checkedDay)
-		signal := GoldenCross(bars[o-1:oo], shortAv)
-		if signal == 1 {
-			equityAmt := float64(qty) * checkedDay.Close
-			ClientCont.long[stock].Order(stock, qty, equityAmt)
+		myFuncs := []func(lbars []marketdata.Bar, shortAv int) int{
+			GoldenCross,
 		}
+		//fmt.Println(checkedDay)
+		checkedDay := bars[oo-1 : oo][0]
+		commitBars := bars[o-1 : oo]
+		for _, v := range myFuncs {
+			signal := ClientCont.sygnalTrader(v, commitBars, sg)
+			if signal == 1 {
+				equityAmt := float64(qty) * checkedDay.Close
+				ClientCont.long[stock].Order(stock, qty, equityAmt)
+			}
+		}
+
+		// signal := GoldenCross(bars[o-1:oo], shortAv)
 
 	}
 
 	fmt.Println(ClientCont.long[stock].equityAmt)
 	ii := ClientCont.valuePositions(stock, bars[len(bars)-1].Close)
-	fmt.Println(ii)
+	sg.Gain = ii[stock]
+	//fmt.Println(ClientCont.long[stock].signalConf.tradeCount)
+	fmt.Println(sg)
+	//store.CreateItem(ClientCont, stock, sg)
 }
 
-//1128 1258
+func (acc AlpacaClientContainer) sygnalTrader(s func(bars []marketdata.Bar, shortAv int) int, bars []marketdata.Bar, sg signalConfig) int {
+	//shortAv := acc.long[stock].signalConf.shortAv
+	signal := s(bars, sg.ShortAv)
+	return signal
+}

@@ -36,3 +36,30 @@ func GoldenCross(lbars []marketdata.Bar, shortAv int) int {
 	}
 	return 0
 }
+
+func Derivation(lbars []marketdata.Bar, sStart, sEnd int) int {
+	longLength := len(lbars)
+	longEnd := lbars[longLength-1]
+	longBegin := lbars[0]
+	longPriceDelta := (longEnd.Close - longBegin.Close) * 24 * 60 * 60 * float64(longLength)
+	longDeltat := longEnd.Timestamp.Sub(longBegin.Timestamp).Seconds() * longBegin.Close
+	longPriceDeriv := longPriceDelta / longDeltat
+
+	shortBegin := lbars[sStart]
+	shortEnd := lbars[sEnd-1]
+	shortPriceDelta := (shortEnd.Close - shortBegin.Close) * 24 * 60 * 60 * float64(sEnd-sStart)
+	shortDeltat := shortEnd.Timestamp.Sub(shortBegin.Timestamp).Seconds() //* shortBegin.Close
+	shortPriceDeriv := shortPriceDelta / shortDeltat
+	fmt.Println(longPriceDeriv)
+	fmt.Println(longPriceDeriv)
+	fmt.Println(longBegin)
+	fmt.Println(longEnd)
+	fmt.Println(shortPriceDeriv)
+	fmt.Println(shortBegin)
+	fmt.Println(shortEnd)
+	//shortDeltat := shortPeriod
+	if true {
+	}
+
+	return 2
+}
