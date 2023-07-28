@@ -68,12 +68,12 @@ func readFromFile(filename string) []string {
 
 func getDataFromURL(url, username, password string) io.ReadCloser {
 	// Define a JSON string
-	jsonString := `{"MetadataB64": "value", "PartnerName": "IDP"}`
+	/* jsonString := `{"MetadataB64": "value", "PartnerName": "IDP"}`
 
 	// Create an io.ReadCloser that reads from the JSON string
 	reader := ioutil.NopCloser(strings.NewReader(jsonString))
 	defer reader.Close()
-	return reader
+	return reader */
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
